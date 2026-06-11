@@ -1,0 +1,64 @@
+# Raw data -- too large and not required for portfolio review
+data/raw/
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+env/
+.venv/
+
+# Credentials -- NEVER commit
+snowflake_credentials.json
+*.credentials
+secrets.json
+.env.*
+
+# Large generated files (regenerate locally)
+ml_models/artifacts/clv_sample.csv
+PargoParcels_Portfolio_v1.zip
+
+# Excel (binary, regenerate with build_excel.py)
+PargoParcels_Analytics.xlsx
+
+# Claude Code session config (personal)
+.claude/
+
+# Generator checkpoint (local state)
+data_generator/.gen_checkpoint.pkl
+*.pkl
+
+# Duplicate root-level scripts (originals are in data_generator/)
+/build_ebook.py
+/build_excel.py
+
+# Log files
+*.log
+loader_run.log
+repair_loader.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# DBT compiled output
+pargo_dbt/target/
+pargo_dbt/dbt_packages/
+pargo_dbt/logs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Byte-compiled
+*.egg-info/
+dist/
+build/

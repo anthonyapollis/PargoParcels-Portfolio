@@ -1,0 +1,13 @@
+pargo:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "<your_account>.af-south-1.aws"
+      user: "<user>"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: PARGO_TRANSFORMER
+      warehouse: PARGO_TRANSFORM_WH
+      database: PARGO_DW
+      schema: ANALYTICS
+      threads: 8

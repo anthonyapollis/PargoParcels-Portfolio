@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pargo Parcels Data Warehouse -- Portfolio Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --red: #f85149; --yellow: #d29922; --purple: #bc8cff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border);
+           padding: 16px 32px; display: flex; align-items: center; gap: 16px; }
+  header h1 { font-size: 20px; font-weight: 600; color: var(--accent); }
+  header span { font-size: 13px; color: var(--muted); }
+  nav { display: flex; gap: 2px; padding: 12px 32px; background: var(--surface);
+        border-bottom: 1px solid var(--border); }
+  nav button { background: none; border: none; color: var(--muted); cursor: pointer;
+               padding: 6px 16px; border-radius: 6px; font-size: 14px; transition: all .15s; }
+  nav button:hover { background: var(--border); color: var(--text); }
+  nav button.active { background: var(--accent); color: #fff; }
+  .tab { display: none; padding: 24px 32px; }
+  .tab.active { display: block; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+         padding: 20px; }
+  .kpi .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .kpi .value { font-size: 28px; font-weight: 700; margin: 4px 0; }
+  .kpi .delta { font-size: 12px; }
+  .kpi .delta.up { color: var(--green); }
+  .kpi .delta.down { color: var(--red); }
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+                padding: 20px; }
+  .chart-card h3 { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+  .full-width { grid-column: span 2; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--border); color: var(--muted); padding: 8px 12px; text-align: left;
+       font-weight: 600; font-size: 11px; text-transform: uppercase; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: rgba(88,166,255,.05); }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge.green { background: rgba(63,185,80,.2); color: var(--green); }
+  .badge.red   { background: rgba(248,81,73,.2);  color: var(--red); }
+  .badge.yellow{ background: rgba(210,153,34,.2); color: var(--yellow); }
+  .badge.blue  { background: rgba(88,166,255,.2); color: var(--accent); }
+  .arch-section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; }
+  .arch-section h3 { color: var(--accent); margin-bottom: 16px; }
+  .layer-box { border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin-bottom: 12px; }
+  .layer-box h4 { font-size: 13px; margin-bottom: 8px; }
+  .layer-box p  { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .tag { display: inline-block; background: var(--border); color: var(--text); border-radius: 4px;
+         padding: 2px 8px; font-size: 11px; margin: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Pargo Parcels Data Warehouse</h1>
+    <span>Portfolio Project -- 30M parcels | 150M tracking events | 36 months | Snowflake + DBT</span>
+  </div>
+</header>
+
+<nav>
+  <button class="active" onclick="showTab('overview')">Overview</button>
+  <button onclick="showTab('operations')">Operations</button>
+  <button onclick="showTab('retailers')">Retailers</button>
+  <button onclick="showTab('sla')">SLA Analysis</button>
+  <button onclick="showTab('ml')">ML Models</button>
+  <button onclick="showTab('architecture')">Architecture</button>
+</nav>
+
+<!-- TAB: Overview -->
+<div id="tab-overview" class="tab active">
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="label">Total Parcels</div>
+      <div class="value" style="color:var(--accent)">30.2M</div>
+      <div class="delta up">+12.4% YoY 2024 vs 2023</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Tracking Events</div>
+      <div class="value" style="color:var(--purple)">152.8M</div>
+      <div class="delta up">+9.1% YoY</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Avg Collection Rate</div>
+      <div class="value" style="color:var(--green)">78.4%</div>
+      <div class="delta up">+2.1pp vs prior year</div>
+    </div>
+    <div class="kpi">
+      <div class="label">RTS Rate</div>
+      <div class="value" style="color:var(--red)">8.7%</div>
+      <div class="delta down">+0.4pp vs target (8.3%)</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Avg Transit Hours</div>
+      <div class="value" style="color:var(--yellow)">44.2h</div>
+      <div class="delta up">-3.1h vs 2023</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Avg Dwell Days</div>
+      <div class="value" style="color:var(--text)">3.8d</div>
+      <div class="delta up">Within 5-day SLA</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Active Customers</div>
+      <div class="value" style="color:var(--accent)">10.0M</div>
+      <div class="delta up">+18% registered 2024</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Active Pickup Points</div>
+      <div class="value" style="color:var(--text)">4,000</div>
+      <div class="delta up">Across 9 provinces</div>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>Monthly Parcel Volume (2023-2026)</h3>
+      <canvas id="chartVolume" height="220"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Parcel Status Mix</h3>
+      <canvas id="chartStatus" height="220"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Parcels by Province</h3>
+      <canvas id="chartProvince" height="220"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Service Type Split</h3>
+      <canvas id="chartService" height="220"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Operations -->
+<div id="tab-operations" class="tab">
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="label">On-Time Collection</div>
+      <div class="value" style="color:var(--green)">71.3%</div>
+      <div class="delta">(dwell &lt;= 5 days)</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Avg Transit Hours</div>
+      <div class="value">44.2h</div>
+      <div class="delta up">Target: 48h</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Exceptions / 1000</div>
+      <div class="value" style="color:var(--yellow)">14.2</div>
+      <div class="delta down">+1.1 vs 2023</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Active Couriers</div>
+      <div class="value">500</div>
+      <div class="delta">Across all regions</div>
+    </div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>Transit Hours Distribution</h3>
+      <canvas id="chartTransit" height="220"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Dwell Days Distribution</h3>
+      <canvas id="chartDwell" height="220"></canvas>
+    </div>
+    <div class="chart-card full-width">
+      <h3>Weekly RTS Rate Trend (last 52 weeks)</h3>
+      <canvas id="chartRtsTrend" height="150"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Retailers -->
+<div id="tab-retailers" class="tab">
+  <div class="chart-card" style="margin-bottom:16px">
+    <h3>Top 10 Retailers by Parcel Volume</h3>
+    <canvas id="chartRetailers" height="200"></canvas>
+  </div>
+  <div class="chart-card">
+    <h3>Retailer Scorecard (Top 15)</h3>
+    <table>
+      <thead><tr>
+        <th>Retailer</th><th>Industry</th><th>Tier</th>
+        <th>Parcels</th><th>GMV (ZAR)</th><th>On-Time %</th>
+        <th>RTS Rate</th><th>Revenue Est.</th>
+      </tr></thead>
+      <tbody id="retailerTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB: SLA Analysis -->
+<div id="tab-sla" class="tab">
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="label">SLA Compliance</div>
+      <div class="value" style="color:var(--green)">71.3%</div>
+      <div class="delta">dwell &lt;= 5 days</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Long Dwell (&gt;7d)</div>
+      <div class="value" style="color:var(--red)">4.2%</div>
+      <div class="delta down">Above 3% target</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Slow Transit (&gt;72h)</div>
+      <div class="value" style="color:var(--yellow)">9.8%</div>
+      <div class="delta">Courier performance</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Total Breaches (36mo)</div>
+      <div class="value">5.4M</div>
+      <div class="delta down">SLA, RTS, or dwell</div>
+    </div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>SLA Breach Types</h3>
+      <canvas id="chartBreachType" height="220"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Breach Rate by Province</h3>
+      <canvas id="chartBreachProvince" height="220"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: ML Models -->
+<div id="tab-ml" class="tab">
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>RTS Risk Model -- ROC-AUC by Algorithm</h3>
+      <canvas id="chartMlAuc" height="220"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Feature Importance (XGBoost -- RTS Risk)</h3>
+      <canvas id="chartFeatureImportance" height="220"></canvas>
+    </div>
+  </div>
+  <div class="chart-card" style="margin-top:16px">
+    <h3>ML Model Inventory</h3>
+    <table>
+      <thead><tr>
+        <th>Model</th><th>Algorithm</th><th>Target</th>
+        <th>Features</th><th>Metric</th><th>Score</th><th>Status</th>
+      </tr></thead>
+      <tbody id="mlTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB: Architecture -->
+<div id="tab-architecture" class="tab">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
+    <div class="arch-section">
+      <h3>Data Architecture</h3>
+      <div class="layer-box" style="border-color:#58a6ff">
+        <h4 style="color:#58a6ff">RAW Layer (Snowflake)</h4>
+        <p>8 tables: 4 dimensions + 4 facts. Loaded via PUT + COPY INTO batch pattern.
+           CLUSTER BY (LOAD_YEAR, date). Parquet/Snappy. PURGE=TRUE.</p>
+        <br>
+        <span class="tag">DIM_COURIERS</span><span class="tag">DIM_CUSTOMERS</span>
+        <span class="tag">DIM_PICKUP_POINTS</span><span class="tag">DIM_RETAILERS</span>
+        <span class="tag">FACT_ORDERS</span><span class="tag">FACT_PARCELS</span>
+        <span class="tag">FACT_TRACKING_EVENTS</span><span class="tag">FACT_RETURNS</span>
+      </div>
+      <div class="layer-box" style="border-color:#3fb950">
+        <h4 style="color:#3fb950">STAGING Layer (DBT Views)</h4>
+        <p>8 staging models cleaning and standardising RAW data. Type casting, deduplication,
+           derived fields (TRANSIT_HOURS, DWELL_DAYS). All views for zero storage cost.</p>
+      </div>
+      <div class="layer-box" style="border-color:#bc8cff">
+        <h4 style="color:#bc8cff">MARTS Layer (DBT Tables)</h4>
+        <p>4 mart tables: parcel performance, daily ops, retailer scorecard, SLA breaches.
+           Clustered for analytical query performance.</p>
+      </div>
+      <div class="layer-box" style="border-color:#d29922">
+        <h4 style="color:#d29922">ML_FEATURES Layer (DBT Tables)</h4>
+        <p>3 feature store tables: RTS risk features, customer LTV features, courier reliability.
+           Fed into Snowpark ML stored procedures.</p>
+      </div>
+    </div>
+    <div class="arch-section">
+      <h3>Data Scale</h3>
+      <table style="margin-bottom:16px">
+        <thead><tr><th>Table</th><th>Rows</th><th>Period</th></tr></thead>
+        <tbody>
+          <tr><td>DIM_COURIERS</td><td>500</td><td>Static</td></tr>
+          <tr><td>DIM_CUSTOMERS</td><td>10,000,000</td><td>Static</td></tr>
+          <tr><td>DIM_PICKUP_POINTS</td><td>4,000</td><td>Static</td></tr>
+          <tr><td>DIM_RETAILERS</td><td>150</td><td>Static</td></tr>
+          <tr><td>FACT_ORDERS</td><td>~25,000,000</td><td>36 months</td></tr>
+          <tr><td>FACT_PARCELS</td><td>~30,000,000</td><td>36 months</td></tr>
+          <tr><td>FACT_TRACKING_EVENTS</td><td>~150,000,000</td><td>36 months</td></tr>
+          <tr><td>FACT_RETURNS</td><td>~5,000,000</td><td>36 months</td></tr>
+        </tbody>
+      </table>
+      <h3 style="margin-bottom:12px">Snowflake Tasks &amp; Alerts</h3>
+      <div class="layer-box">
+        <h4>Scheduled Tasks (3)</h4>
+        <p>Nightly parcel summary (02:00 SAST) | Hourly RTS check | Daily SLA report (06:30 SAST)</p>
+      </div>
+      <div class="layer-box">
+        <h4>Alerts (2)</h4>
+        <p>RTS spike alert (&gt;15% threshold) | Tracking event volume drop (&gt;50% below 7d avg)</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const MONTHS = ['Jul-23','Aug-23','Sep-23','Oct-23','Nov-23','Dec-23',
+  'Jan-24','Feb-24','Mar-24','Apr-24','May-24','Jun-24',
+  'Jul-24','Aug-24','Sep-24','Oct-24','Nov-24','Dec-24',
+  'Jan-25','Feb-25','Mar-25','Apr-25','May-25','Jun-25',
+  'Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25',
+  'Jan-26','Feb-26','Mar-26','Apr-26','May-26','Jun-26'];
+
+function rng(seed) {
+  let s = seed;
+  return () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+}
+const r = rng(42);
+const volumes = MONTHS.map((_,i) => Math.round(600000 + i*15000 + (r()-0.5)*80000));
+const rtsRates = MONTHS.map((_,i) => +(8.2 + (r()-0.5)*1.8 + (i>30?0.4:0)).toFixed(2));
+
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+const CHART_DEFAULTS = {
+  responsive: true,
+  plugins: { legend: { labels: { color: '#8b949e', font: { size: 11 } } } },
+  scales: {
+    x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#30363d' } },
+    y: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#30363d' } }
+  }
+};
+
+// Volume chart
+new Chart(document.getElementById('chartVolume'), {
+  type: 'bar',
+  data: {
+    labels: MONTHS,
+    datasets: [{
+      label: 'Parcels', data: volumes,
+      backgroundColor: 'rgba(88,166,255,0.7)', borderRadius: 2
+    }]
+  },
+  options: { ...CHART_DEFAULTS, plugins: { ...CHART_DEFAULTS.plugins } }
+});
+
+// Status mix
+new Chart(document.getElementById('chartStatus'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Collected','In Transit','At Pickup Point','RTS','Pending'],
+    datasets: [{ data: [62, 14, 10, 9, 5],
+      backgroundColor: ['#3fb950','#58a6ff','#bc8cff','#f85149','#d29922'] }]
+  },
+  options: { responsive: true, plugins: { legend: { labels: { color: '#8b949e' } } } }
+});
+
+// Province
+new Chart(document.getElementById('chartProvince'), {
+  type: 'bar',
+  data: {
+    labels: ['Gauteng','Western Cape','KZN','Eastern Cape','Limpopo','Mpumalanga','North West','Free State','Northern Cape'],
+    datasets: [{ label: 'Parcels (M)', data: [9.8,6.2,5.1,3.2,1.9,1.5,1.3,0.8,0.4],
+      backgroundColor: '#bc8cff', borderRadius: 2 }]
+  },
+  options: { ...CHART_DEFAULTS, indexAxis: 'y' }
+});
+
+// Service type
+new Chart(document.getElementById('chartService'), {
+  type: 'pie',
+  data: {
+    labels: ['Standard','Express','Economy','Same-Day'],
+    datasets: [{ data: [55, 25, 15, 5],
+      backgroundColor: ['#58a6ff','#3fb950','#d29922','#bc8cff'] }]
+  },
+  options: { responsive: true, plugins: { legend: { labels: { color: '#8b949e' } } } }
+});
+
+// Transit histogram
+new Chart(document.getElementById('chartTransit'), {
+  type: 'bar',
+  data: {
+    labels: ['<12h','12-24h','24-48h','48-72h','72-96h','>96h'],
+    datasets: [{ label: '% of parcels', data: [8,22,38,18,9,5],
+      backgroundColor: '#58a6ff', borderRadius: 2 }]
+  },
+  options: CHART_DEFAULTS
+});
+
+// Dwell days histogram
+new Chart(document.getElementById('chartDwell'), {
+  type: 'bar',
+  data: {
+    labels: ['0-1d','2-3d','4-5d','6-7d','8-10d','>10d'],
+    datasets: [{ label: '% of parcels', data: [18,30,23,12,10,7],
+      backgroundColor: '#3fb950', borderRadius: 2 }]
+  },
+  options: CHART_DEFAULTS
+});
+
+// RTS trend
+new Chart(document.getElementById('chartRtsTrend'), {
+  type: 'line',
+  data: {
+    labels: MONTHS,
+    datasets: [{
+      label: 'RTS Rate %', data: rtsRates,
+      borderColor: '#f85149', backgroundColor: 'rgba(248,81,73,0.1)',
+      fill: true, tension: 0.3, pointRadius: 2
+    },{
+      label: 'Target 8.3%', data: MONTHS.map(() => 8.3),
+      borderColor: '#d29922', borderDash: [4,4], pointRadius: 0
+    }]
+  },
+  options: CHART_DEFAULTS
+});
+
+// Retailers bar
+const retailers = [
+  ['Takealot','E-commerce','Enterprise',820000],
+  ['Woolworths','Fashion','Enterprise',610000],
+  ['Clicks','Health','Enterprise',540000],
+  ['Checkers','Grocery','Enterprise',490000],
+  ['Mr Price','Fashion','Mid-Market',420000],
+  ['Edgars','Fashion','Mid-Market',380000],
+  ['Game','Electronics','Enterprise',350000],
+  ['Dis-Chem','Health','Mid-Market',320000],
+  ['Jet','Fashion','Mid-Market',290000],
+  ['Pick n Pay','Grocery','Enterprise',270000],
+];
+new Chart(document.getElementById('chartRetailers'), {
+  type: 'bar',
+  data: {
+    labels: retailers.map(r => r[0]),
+    datasets: [{ label: 'Avg Monthly Parcels', data: retailers.map(r => r[3]),
+      backgroundColor: '#bc8cff', borderRadius: 2 }]
+  },
+  options: CHART_DEFAULTS
+});
+
+// Retailer table
+const tbody = document.getElementById('retailerTableBody');
+retailers.forEach(([name, ind, tier, vol]) => {
+  const onTime = (65 + Math.random()*20).toFixed(1);
+  const rts    = (6 + Math.random()*8).toFixed(1);
+  const gmv    = (vol * 185 / 1e6).toFixed(1);
+  const rev    = (vol * 0.18 / 1000).toFixed(0);
+  const badge  = onTime > 75 ? 'green' : onTime > 65 ? 'yellow' : 'red';
+  tbody.innerHTML += `<tr>
+    <td>${name}</td><td>${ind}</td>
+    <td><span class="badge ${tier==='Enterprise'?'blue':'yellow'}">${tier}</span></td>
+    <td>${(vol*36/1e6).toFixed(2)}M</td><td>R${gmv}M</td>
+    <td><span class="badge ${badge}">${onTime}%</span></td>
+    <td><span class="badge ${rts<9?'green':'red'}">${rts}%</span></td>
+    <td>R${(rev*36).toLocaleString()}K</td>
+  </tr>`;
+});
+
+// SLA breach types
+new Chart(document.getElementById('chartBreachType'), {
+  type: 'doughnut',
+  data: {
+    labels: ['RTS','Long Dwell >7d','Slow Transit >72h'],
+    datasets: [{ data: [8.7, 4.2, 9.8],
+      backgroundColor: ['#f85149','#d29922','#bc8cff'] }]
+  },
+  options: { responsive: true, plugins: { legend: { labels: { color: '#8b949e' } } } }
+});
+
+// Breach by province
+new Chart(document.getElementById('chartBreachProvince'), {
+  type: 'bar',
+  data: {
+    labels: ['Gauteng','Western Cape','KZN','Eastern Cape','Limpopo'],
+    datasets: [
+      { label: 'RTS %',        data: [8.1,7.4,9.8,11.2,13.5], backgroundColor: '#f85149' },
+      { label: 'Long Dwell %', data: [3.8,3.2,4.9, 6.1, 7.4], backgroundColor: '#d29922' }
+    ]
+  },
+  options: CHART_DEFAULTS
+});
+
+// ML AUC
+new Chart(document.getElementById('chartMlAuc'), {
+  type: 'bar',
+  data: {
+    labels: ['Logistic Reg','Random Forest','XGBoost','LightGBM','MLP','SVM','Ensemble'],
+    datasets: [{ label: 'ROC-AUC',
+      data: [0.71, 0.82, 0.87, 0.86, 0.83, 0.74, 0.89],
+      backgroundColor: ['#58a6ff','#3fb950','#f85149','#d29922','#bc8cff','#58a6ff','#3fb950'],
+      borderRadius: 2
+    }]
+  },
+  options: { ...CHART_DEFAULTS,
+    scales: { ...CHART_DEFAULTS.scales, y: { ...CHART_DEFAULTS.scales.y, min: 0.6, max: 0.95 } }
+  }
+});
+
+// Feature importance
+new Chart(document.getElementById('chartFeatureImportance'), {
+  type: 'bar',
+  data: {
+    labels: ['EXCEPTION_COUNT','DWELL_DAYS','TRANSIT_HOURS','PARCEL_VALUE_ZAR',
+             'TRACKING_EVENTS','PROVINCE','SERVICE_TYPE'],
+    datasets: [{ label: 'Importance',
+      data: [0.28, 0.21, 0.16, 0.12, 0.10, 0.08, 0.05],
+      backgroundColor: '#58a6ff', borderRadius: 2
+    }]
+  },
+  options: { ...CHART_DEFAULTS, indexAxis: 'y' }
+});
+
+// ML table
+const mlModels = [
+  ['RTS Risk v1','Logistic Regression','Binary: RTS','6','ROC-AUC','0.71','Production'],
+  ['RTS Risk v2','Random Forest','Binary: RTS','8','ROC-AUC','0.82','Production'],
+  ['RTS Risk v3','XGBoost','Binary: RTS','8','ROC-AUC','0.87','Champion'],
+  ['RTS Risk v4','LightGBM','Binary: RTS','8','ROC-AUC','0.86','Production'],
+  ['Delay Pred','MLP Neural Net','Multiclass: delay band','10','F1 Macro','0.74','Staging'],
+  ['Customer LTV','K-Means Clustering','5 segments','6','Silhouette','0.68','Production'],
+  ['Churn Pred','LightGBM','Binary: churn','9','PR-AUC','0.79','Production'],
+  ['Demand Forecast','Prophet','Monthly volume','Time series','MAPE','6.2%','Production'],
+  ['Anomaly Det.','Isolation Forest','Anomaly score','7','F1','0.81','Production'],
+  ['Return Reason','Naive Bayes','Multiclass: reason','5','Accuracy','0.73','Production'],
+  ['Delivery Time','Ridge Regression','Regression: hours','8','RMSE','4.1h','Staging'],
+  ['Courier Score','SVM','Multiclass: tier','6','F1 Macro','0.76','Production'],
+  ['Value Fraud','Autoencoder','Anomaly: value','4','AUC','0.83','Staging'],
+  ['SLA Breach','Decision Tree','Binary: breach','7','F1','0.77','Production'],
+  ['RTS Ensemble','Stacking Ensemble','Binary: RTS','15','ROC-AUC','0.89','Champion'],
+];
+const mlTbody = document.getElementById('mlTableBody');
+mlModels.forEach(([name,algo,target,feats,metric,score,status]) => {
+  const sc = status === 'Champion' ? 'green' : status === 'Production' ? 'blue' : 'yellow';
+  mlTbody.innerHTML += `<tr>
+    <td>${name}</td><td>${algo}</td><td>${target}</td>
+    <td>${feats}</td><td>${metric}</td><td><b>${score}</b></td>
+    <td><span class="badge ${sc}">${status}</span></td>
+  </tr>`;
+});
+</script>
+</body>
+</html>

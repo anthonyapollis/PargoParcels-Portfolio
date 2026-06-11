@@ -1,0 +1,38 @@
+name: pargo_analytics
+version: 1.0.0
+profile: pargo
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+snapshot-paths: ["snapshots"]
+macro-paths: ["macros"]
+
+models:
+  pargo_analytics:
+    staging:
+      +schema: staging
+      +materialized: view
+    intermediate:
+      +schema: intermediate
+      +materialized: ephemeral
+    marts:
+      +schema: marts
+      +materialized: table
+      core:
+        fct_parcels:
+          +materialized: incremental
+        fct_tracking_events:
+          +materialized: incremental
+
+snapshots:
+  pargo_analytics:
+    +target_schema: snapshots
+
+seeds:
+  pargo_analytics:
+    +schema: staging
+
+vars:
+  sla_delivery_hours: 48        # contractual: parcel at point within 48h of creation
+  collection_window_days: 7     # customer has 7 days to collect before RTS
+  history_start: '2023-07-01'

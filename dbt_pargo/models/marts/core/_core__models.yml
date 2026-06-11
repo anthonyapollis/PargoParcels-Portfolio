@@ -1,0 +1,67 @@
+version: 2
+models:
+  - name: fct_parcels
+    description: One row per parcel with milestone timestamps and derived SLA/dwell metrics.
+    columns:
+      - name: parcel_key
+        tests: [unique, not_null]
+      - name: retailer_key
+        tests:
+          - not_null
+          - relationships: {to: ref('dim_retailer'), field: retailer_key}
+      - name: pickup_point_key
+        tests:
+          - not_null
+          - relationships: {to: ref('dim_pickup_point'), field: pickup_point_key}
+      - name: customer_key
+        tests:
+          - relationships: {to: ref('dim_customer'), field: customer_key}
+      - name: parcel_status
+        tests:
+          - accepted_values:
+              values: ['Collected','ExpiredRTS','Lost','Damaged','InTransit']
+      - name: parcel_weight_kg
+        tests:
+          - dbt_utils.accepted_range: {min_value: 0, inclusive: false, where: "parcel_weight_kg is not null"}
+  - name: fct_tracking_events
+    columns:
+      - name: tracking_event_key
+        tests: [unique, not_null]
+      - name: parcel_key
+        tests:
+          - not_null
+          - relationships: {to: ref('fct_parcels'), field: parcel_key}
+      - name: event_type
+        tests:
+          - relationships: {to: ref('event_type_mapping'), field: event_type}
+  - name: fct_returns
+    columns:
+      - name: return_key
+        tests: [unique, not_null]
+      - name: parcel_key
+        tests:
+          - relationships: {to: ref('fct_parcels'), field: parcel_key}
+  - name: dim_retailer
+    columns:
+      - name: retailer_key
+        tests: [unique, not_null]
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "1 = (select max(cnt) from (select retailer_id, sum(iff(is_current,1,0)) cnt from {{ ref('dim_retailer') }} group by 1))"
+          config: {severity: warn}
+  - name: dim_pickup_point
+    columns:
+      - name: pickup_point_key
+        tests: [unique, not_null]
+      - name: province
+        tests:
+          - accepted_values:
+              values: ['Gauteng','KwaZulu-Natal','Western Cape','Eastern Cape','Limpopo','Mpumalanga','North West','Free State','Northern Cape']
+  - name: dim_customer
+    columns:
+      - name: customer_key
+        tests: [unique, not_null]
+  - name: dim_date
+    columns:
+      - name: date_key
+        tests: [unique, not_null]

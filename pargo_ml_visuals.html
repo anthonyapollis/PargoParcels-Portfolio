@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pargo ML Models -- Visual Portfolio</title>
+<style>
+  :root {
+    --bg:#0d1117;--surface:#161b22;--border:#30363d;
+    --text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;
+    --green:#3fb950;--red:#f85149;--yellow:#d29922;--purple:#bc8cff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif}
+  header{background:var(--surface);border-bottom:1px solid var(--border);
+         padding:16px 32px}
+  header h1{font-size:20px;color:var(--accent);font-weight:600}
+  header p{font-size:13px;color:var(--muted);margin-top:4px}
+  .sections{padding:24px 32px;display:grid;gap:32px}
+  .section-title{font-size:16px;font-weight:600;color:var(--accent);
+                 margin-bottom:16px;padding-bottom:8px;
+                 border-bottom:1px solid var(--border)}
+  .plots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(520px,1fr));gap:16px}
+  .plot-card{background:var(--surface);border:1px solid var(--border);
+             border-radius:8px;overflow:hidden}
+  .plot-card h3{padding:12px 16px 8px;font-size:13px;color:var(--muted);font-weight:500}
+  .plot-card img{width:100%;display:block;background:#111}
+  .wide{grid-column:span 2}
+  .model-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .model-card{background:var(--surface);border:1px solid var(--border);
+              border-radius:8px;padding:16px}
+  .model-card .name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+  .model-card .algo{font-size:11px;color:var(--accent);margin-bottom:8px}
+  .model-card .desc{font-size:11px;color:var(--muted);line-height:1.5}
+  .model-card .metric{margin-top:10px;font-size:12px}
+  .metric span.val{font-weight:700;color:var(--green)}
+  .badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+  .badge.green{background:rgba(63,185,80,.2);color:var(--green)}
+  .badge.blue{background:rgba(88,166,255,.2);color:var(--accent)}
+  .badge.yellow{background:rgba(210,153,34,.2);color:var(--yellow)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Pargo Parcels -- ML Models Visual Portfolio</h1>
+  <p>15 models | Plots generated from 200K synthetic records | Snowflake + Scikit-learn + XGBoost + LightGBM</p>
+</header>
+
+<div class="sections">
+
+  <!-- Summary dashboard -->
+  <div>
+    <div class="section-title">Summary Dashboard</div>
+    <div class="plots-grid">
+      <div class="plot-card wide">
+        <h3>00 -- ML Portfolio Summary Dashboard (AUC comparison, score distributions, province analysis)</h3>
+        <img src="ml_models/plots/00_ml_summary_dashboard.png" alt="ML Summary Dashboard" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <div style="padding:40px;text-align:center;color:var(--muted);display:none">Plot not yet generated -- run train_all_models.py --sample</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RTS Classification -->
+  <div>
+    <div class="section-title">RTS Risk Classification (5 classifiers + ensemble)</div>
+    <div class="plots-grid">
+      <div class="plot-card">
+        <h3>01 -- ROC Curves: Logistic Regression | Random Forest | XGBoost | LightGBM | Decision Tree</h3>
+        <img src="ml_models/plots/01_rts_roc_curves.png" alt="ROC Curves" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>02 -- XGBoost Feature Importances (top 15 features for RTS prediction)</h3>
+        <img src="ml_models/plots/02_xgb_feature_importance.png" alt="Feature Importance" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>03 -- Best Classifier Confusion Matrix (actual vs predicted RTS/Collected)</h3>
+        <img src="ml_models/plots/03_best_confusion_matrix.png" alt="Confusion Matrix" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>05 -- SVM (LinearSVC) Confusion Matrix</h3>
+        <img src="ml_models/plots/05_svm_confusion_matrix.png" alt="SVM CM" onerror="this.style.opacity=0.3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Neural Network -->
+  <div>
+    <div class="section-title">Neural Network</div>
+    <div class="plots-grid">
+      <div class="plot-card">
+        <h3>04 -- MLP Training Loss Curve + Validation Score</h3>
+        <img src="ml_models/plots/04_mlp_loss_curve.png" alt="MLP Loss" onerror="this.style.opacity=0.3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Regression -->
+  <div>
+    <div class="section-title">Delivery Time Regression (Ridge Regression)</div>
+    <div class="plots-grid">
+      <div class="plot-card wide">
+        <h3>06 -- Ridge Regression: Residuals vs Predicted + Residual Distribution (Transit Hours)</h3>
+        <img src="ml_models/plots/06_ridge_residuals.png" alt="Ridge Residuals" onerror="this.style.opacity=0.3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Segmentation -->
+  <div>
+    <div class="section-title">Customer Segmentation (K-Means)</div>
+    <div class="plots-grid">
+      <div class="plot-card">
+        <h3>07 -- Elbow Plot + Silhouette Scores (k=2 to k=8)</h3>
+        <img src="ml_models/plots/07_kmeans_elbow_silhouette.png" alt="Elbow" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>08 -- Customer Segments in PCA 2D Space (k=5 clusters)</h3>
+        <img src="ml_models/plots/08_kmeans_segments.png" alt="Segments" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card wide">
+        <h3>09 -- Segment Profile Heatmap (normalised feature means per segment)</h3>
+        <img src="ml_models/plots/09_segment_heatmap.png" alt="Heatmap" onerror="this.style.opacity=0.3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Anomaly Detection -->
+  <div>
+    <div class="section-title">Anomaly Detection (Isolation Forest)</div>
+    <div class="plots-grid">
+      <div class="plot-card">
+        <h3>10 -- Anomaly Score Distribution with 5th Percentile Threshold</h3>
+        <img src="ml_models/plots/10_isolation_forest.png" alt="Anomaly Scores" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>11 -- Anomaly vs Normal Feature Distributions (Value | Transit | Exceptions)</h3>
+        <img src="ml_models/plots/11_anomaly_feature_dist.png" alt="Anomaly Features" onerror="this.style.opacity=0.3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Naive Bayes -->
+  <div>
+    <div class="section-title">Return Reason Classification (Naive Bayes)</div>
+    <div class="plots-grid">
+      <div class="plot-card">
+        <h3>12 -- Naive Bayes Confusion Matrix (Low Risk | Dwell Risk | Exception Risk)</h3>
+        <img src="ml_models/plots/12_naive_bayes_cm.png" alt="Naive Bayes CM" onerror="this.style.opacity=0.3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Forecasting -->
+  <div>
+    <div class="section-title">Demand Forecasting (ARIMA / Holt-Winters + Prophet Decomposition)</div>
+    <div class="plots-grid">
+      <div class="plot-card wide">
+        <h3>13 -- Holt-Winters Forecast (30 months train, 6 months forecast with 95% CI)</h3>
+        <img src="ml_models/plots/13_volume_forecast.png" alt="Forecast" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card wide">
+        <h3>14 -- Prophet-Style Decomposition: Observed | Trend | Seasonal (12-month cycle)</h3>
+        <img src="ml_models/plots/14_prophet_decomposition.png" alt="Decomposition" onerror="this.style.opacity=0.3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Churn LightGBM -->
+  <div>
+    <div class="section-title">Customer Churn Prediction (LightGBM)</div>
+    <div class="plots-grid">
+      <div class="plot-card">
+        <h3>15 -- LightGBM Churn Feature Importances</h3>
+        <img src="ml_models/plots/15_lgb_churn_importance.png" alt="LGB Importance" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>16 -- Calibration Curve: Predicted Probability vs Actual Fraction of Positives</h3>
+        <img src="ml_models/plots/16_churn_calibration.png" alt="Calibration" onerror="this.style.opacity=0.3">
+      </div>
+    </div>
+  </div>
+
+  <!-- CLV Models -->
+  <div>
+    <div class="section-title">Customer Lifetime Value (CLV) -- XGBoost Regressor</div>
+    <div class="plots-grid">
+      <div class="plot-card wide">
+        <h3>17 -- CLV Distributions: Historical vs Annualised vs Predicted (1yr)</h3>
+        <img src="ml_models/plots/17_clv_distributions.png" alt="CLV Distributions" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>18 -- Mean CLV by Province (bar + map overlay)</h3>
+        <img src="ml_models/plots/18_clv_by_province.png" alt="CLV by Province" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>19 -- CLV Decile Analysis: top 20% customers = 69.9% of total value</h3>
+        <img src="ml_models/plots/19_clv_deciles.png" alt="CLV Deciles" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>20 -- CLV vs Churn Risk Matrix (tier segmentation)</h3>
+        <img src="ml_models/plots/20_clv_churn_matrix.png" alt="CLV Churn Matrix" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>21 -- XGBoost CLV Feature Importance (R&sup2;=0.987, MAE=R50)</h3>
+        <img src="ml_models/plots/21_clv_feature_importance.png" alt="CLV Feature Importance" onerror="this.style.opacity=0.3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Geographical -->
+  <div>
+    <div class="section-title">Geographical Analysis -- SA Province Map</div>
+    <div class="plots-grid">
+      <div class="plot-card wide">
+        <h3>22 -- SA Province Customer Density Map + CLV vs RTS Rate by Province</h3>
+        <img src="ml_models/plots/22_sa_province_map.png" alt="SA Province Map" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card wide">
+        <h3>23 -- Province Performance Dashboard: Customer Count | Mean CLV | RTS Rate</h3>
+        <img src="ml_models/plots/23_province_detail.png" alt="Province Detail" onerror="this.style.opacity=0.3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Correlation & Statistical Analysis -->
+  <div>
+    <div class="section-title">Correlation &amp; Statistical Analysis</div>
+    <div class="plots-grid">
+      <div class="plot-card wide">
+        <h3>30 -- Full Feature Correlation Matrix (Pearson r, all parcel &amp; customer attributes)</h3>
+        <img src="ml_models/plots/30_correlation_matrix.png" alt="Correlation Matrix" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>31 -- Feature vs RTS Target Correlation Bar Chart (which features drive RTS)</h3>
+        <img src="ml_models/plots/31_feature_target_correlation.png" alt="Feature-Target Correlation" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card">
+        <h3>32 -- Scatter Matrix: Top 4 Predictive Features vs RTS (Collected vs RTS colour-coded)</h3>
+        <img src="ml_models/plots/32_scatter_matrix.png" alt="Scatter Matrix" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card wide">
+        <h3>33 -- Province x Feature Heatmap: Mean values by province with RTS % column</h3>
+        <img src="ml_models/plots/33_province_feature_heatmap.png" alt="Province Feature Heatmap" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card wide">
+        <h3>34 -- RTS Rate by Retailer Category and Province (with significance bands)</h3>
+        <img src="ml_models/plots/34_rts_by_category_province.png" alt="RTS by Category Province" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card wide">
+        <h3>35 -- Feature Distributions: RTS vs Collected (KS test statistic per feature)</h3>
+        <img src="ml_models/plots/35_feature_distributions.png" alt="Feature Distributions" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card wide">
+        <h3>36 -- CLV Correlations: Feature impact on Historical vs Predicted 1-Year CLV</h3>
+        <img src="ml_models/plots/36_clv_correlations.png" alt="CLV Correlations" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card wide">
+        <h3>37 -- Time-Series Correlation: ACF, Seasonal Volume, Lag-12 Scatter</h3>
+        <img src="ml_models/plots/37_timeseries_correlation.png" alt="Time-Series Correlation" onerror="this.style.opacity=0.3">
+      </div>
+      <div class="plot-card wide">
+        <h3>38 -- Multi-Feature Relationship Scatter Matrix (colour = RTS risk, trend line = Pearson r)</h3>
+        <img src="ml_models/plots/38_multifeature_relationships.png" alt="Multi-Feature Relationships" onerror="this.style.opacity=0.3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Model Inventory -->
+  <div>
+    <div class="section-title">All 15 Models -- Inventory</div>
+    <div class="model-grid" id="modelGrid"></div>
+  </div>
+
+</div>
+
+<script>
+const models = [
+  {name:"RTS Risk v1",algo:"Logistic Regression",use:"Binary: RTS prediction",metric:"ROC-AUC",score:"0.71",status:"Production"},
+  {name:"RTS Risk v2",algo:"Random Forest",use:"Binary: RTS prediction",metric:"ROC-AUC",score:"0.82",status:"Production"},
+  {name:"RTS Risk v3",algo:"XGBoost",use:"Binary: RTS + feature importance",metric:"ROC-AUC",score:"0.87",status:"Champion"},
+  {name:"RTS Risk v4",algo:"LightGBM",use:"Binary: RTS prediction",metric:"ROC-AUC",score:"0.86",status:"Production"},
+  {name:"MLP Classifier",algo:"Neural Network (MLP)",use:"Binary: RTS deep learning",metric:"ROC-AUC",score:"0.83",status:"Production"},
+  {name:"SVM Classifier",algo:"LinearSVC",use:"Courier perf classification",metric:"F1 Macro",score:"0.76",status:"Production"},
+  {name:"Transit Regression",algo:"Ridge Regression",use:"Delivery time hours",metric:"MAE",score:"4.1h",status:"Staging"},
+  {name:"Customer Segments",algo:"K-Means (k=5)",use:"LTV customer segmentation",metric:"Silhouette",score:"0.68",status:"Production"},
+  {name:"Anomaly Detector",algo:"Isolation Forest",use:"Parcel value / event anomalies",metric:"Anomaly %",score:"5%",status:"Production"},
+  {name:"Return Classifier",algo:"Naive Bayes",use:"Return reason classification",metric:"Accuracy",score:"0.73",status:"Production"},
+  {name:"Volume Forecast",algo:"Holt-Winters (ARIMA)",use:"Monthly parcel demand",metric:"MAPE 12.1% | R² 77.8% | RMSE 903",score:"12.1%",status:"Production"},
+  {name:"Seasonal Decomp",algo:"Prophet-style",use:"Trend + seasonal decomposition",metric:"Visual",score:"N/A",status:"Production"},
+  {name:"Churn Predictor",algo:"LightGBM",use:"Customer churn binary",metric:"ROC-AUC",score:"0.79",status:"Production"},
+  {name:"Stacking Ensemble",algo:"Meta-learner (LR)",use:"Final RTS risk ensemble",metric:"ROC-AUC",score:"0.89",status:"Champion"},
+  {name:"MLP Regressor",algo:"Neural Net Regressor",use:"Transit time regression",metric:"MAE",score:"3.9h",status:"Staging"},
+];
+
+const grid = document.getElementById("modelGrid");
+models.forEach(m => {
+  const sc = m.status==="Champion"?"green":m.status==="Production"?"blue":"yellow";
+  grid.innerHTML += `<div class="model-card">
+    <div class="name">${m.name}</div>
+    <div class="algo">${m.algo}</div>
+    <div class="desc">${m.use}</div>
+    <div class="metric">${m.metric}: <span class="val">${m.score}</span>
+      &nbsp;<span class="badge ${sc}">${m.status}</span>
+    </div>
+  </div>`;
+});
+</script>
+</body>
+</html>

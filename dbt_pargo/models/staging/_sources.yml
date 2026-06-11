@@ -1,0 +1,27 @@
+version: 2
+sources:
+  - name: pargo_raw
+    database: PARGO_DW
+    schema: RAW
+    loader: snowflake_copy
+    loaded_at_field: _LOADED_AT
+    freshness:
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
+    tables:
+      - name: retailers
+      - name: pickup_points
+      - name: couriers
+      - name: customers
+      - name: orders
+      - name: parcels
+        description: Core parcel lifecycle table. RAW contains known dirt (dupes, null/negative weights).
+      - name: tracking_events
+        description: >
+          Append-only scan log (~5 events/parcel, 150M rows at full scale).
+          Operational pulse of the business; freshness here is non-negotiable
+          because the customer tracking page reads from it.
+        freshness:
+          warn_after: {count: 2, period: hour}
+          error_after: {count: 6, period: hour}
+      - name: returns

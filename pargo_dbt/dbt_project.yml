@@ -1,0 +1,24 @@
+name: 'pargo_dbt'
+version: '1.0.0'
+config-version: 2
+
+profile: 'pargo_dbt'
+
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  pargo_dbt:
+    staging:
+      +schema: STAGING
+      +materialized: view
+    marts:
+      +schema: MARTS
+      +materialized: table
+    ml_features:
+      +schema: ML_FEATURES
+      +materialized: table

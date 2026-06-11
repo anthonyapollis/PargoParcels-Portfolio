@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: stg_parcels
+    description: "Cleaned parcels with derived TRANSIT_HOURS and DWELL_DAYS"
+    columns:
+      - name: PARCEL_ID
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_customers
+    columns:
+      - name: CUSTOMER_ID
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_orders
+    columns:
+      - name: ORDER_ID
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_couriers
+    columns:
+      - name: COURIER_ID
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_pickup_points
+    columns:
+      - name: PICKUP_POINT_ID
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_retailers
+    columns:
+      - name: RETAILER_ID
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_tracking_events
+    columns:
+      - name: TRACKING_EVENT_ID
+        tests:
+          - not_null
+
+  - name: stg_returns
+    columns:
+      - name: RETURN_ID
+        tests:
+          - not_null

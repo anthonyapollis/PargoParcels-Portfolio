@@ -1,0 +1,10 @@
+event_type,journey_stage,stage_order,is_terminal
+Created,Origination,1,false
+CollectedFromRetailer,First Mile,2,false
+AtHub,Hub,3,false
+InLinehaul,Linehaul,4,false
+ArrivedAtPickupPoint,Last Mile,5,false
+CustomerNotified,Last Mile,6,false
+CollectedByCustomer,Delivered,7,true
+ExpiredReturnedToSender,Returned to Sender,7,true
+LostInTransit,Exception,7,true
