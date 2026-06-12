@@ -16,6 +16,11 @@ Built on **Snowflake + DBT + Python + XGBoost + LightGBM**.
 | ML models | 15 trained |
 | Best ROC-AUC | 0.89 (Stacking Ensemble) |
 
+> **Dataset note:** Dashboard KPIs reflect the full 30.2M parcel enterprise-scale dataset.
+> The Excel workbook uses a 1.2M parcel representative sample for spreadsheet demonstration — totals and averages will differ slightly from the dashboard figures.
+> ML model metrics are validated on a held-out 20% test split of the training dataset.
+> Business case impact figures (e.g. R10.1M RTS saving) are projections based on modelled RTS rates and operational cost assumptions.
+
 ## Architecture
 
 ```

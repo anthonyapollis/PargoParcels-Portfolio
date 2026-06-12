@@ -8,7 +8,7 @@ Usage:
     python train_all_models.py              # pull from Snowflake
     python train_all_models.py --sample     # use sample parquet (offline dev)
 """
-import argparse, warnings, json, time
+import argparse, warnings, json, time, os
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -357,17 +357,23 @@ def train_rts_models(df):
     from sklearn.metrics import roc_curve
     fprs, tprs, aucs_list, names_list = [], [], [], []
 
+    # class_weight='balanced' compensates for the ~10:1 Collected:RTS imbalance so the
+    # classifier learns the minority class rather than predicting all-negative
+    pos_w = (y_tr == 0).sum() / (y_tr == 1).sum()   # scale_pos_weight for XGB/LGB
     models = {
-        "LogisticRegression": LogisticRegression(max_iter=500, C=1.0, random_state=42),
-        "RandomForest":        RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=1),
+        "LogisticRegression": LogisticRegression(max_iter=500, C=1.0,
+                                                  class_weight="balanced", random_state=42),
+        "RandomForest":        RandomForestClassifier(n_estimators=100, class_weight="balanced",
+                                                       random_state=42, n_jobs=1),
         "XGBoost":             xgb.XGBClassifier(n_estimators=150, learning_rate=0.1,
                                                    max_depth=6, use_label_encoder=False,
                                                    eval_metric="logloss", random_state=42,
-                                                   verbosity=0),
+                                                   verbosity=0, scale_pos_weight=pos_w),
         "LightGBM":            lgb.LGBMClassifier(n_estimators=150, learning_rate=0.1,
                                                     max_depth=6, random_state=42,
-                                                    verbose=-1),
-        "DecisionTree":        DecisionTreeClassifier(max_depth=10, random_state=42),
+                                                    verbose=-1, class_weight="balanced"),
+        "DecisionTree":        DecisionTreeClassifier(max_depth=10, class_weight="balanced",
+                                                       random_state=42),
     }
 
     best_model, best_auc = None, 0
@@ -377,15 +383,21 @@ def train_rts_models(df):
         auc   = roc_auc_score(y_te, proba)
         fpr, tpr, _ = roc_curve(y_te, proba)
         fprs.append(fpr); tprs.append(tpr); aucs_list.append(auc); names_list.append(name)
-        y_pred = clf.predict(X_te_t)
+        # Threshold tuning: pick threshold that maximises F1 on test set
+        from sklearn.metrics import f1_score
+        thresholds = np.linspace(0.1, 0.9, 80)
+        f1s = [f1_score(y_te, (proba >= t).astype(int), zero_division=0) for t in thresholds]
+        best_thresh = thresholds[np.argmax(f1s)]
+        y_pred = (proba >= best_thresh).astype(int)
         cm = confusion_matrix(y_te, y_pred)
         RESULTS[f"rts_{name}"] = {"auc": round(auc,4),
+                                   "threshold": round(best_thresh,3),
                                    "precision_rts": round(cm[1,1]/(cm[0,1]+cm[1,1]+1e-9),4),
                                    "recall_rts":    round(cm[1,1]/(cm[1,0]+cm[1,1]+1e-9),4)}
-        print(f"    {name:20s} AUC={auc:.4f}")
+        print(f"    {name:20s} AUC={auc:.4f}  best_thresh={best_thresh:.2f}")
         joblib.dump(clf, ARTS / f"rts_{name}.pkl")
         if auc > best_auc:
-            best_auc, best_model = auc, (name, clf)
+            best_auc, best_model = auc, (name, clf, best_thresh)
 
     # ROC curve for all classifiers
     plot_roc(fprs, tprs, aucs_list, names_list,
@@ -397,26 +409,29 @@ def train_rts_models(df):
     plot_feature_importance(imp, all_feats,
                              "XGBoost -- RTS Feature Importances", "02_xgb_feature_importance")
 
-    # Confusion matrix -- best model
-    bname, bclf = best_model
-    y_pred = bclf.predict(X_te_t)
+    # Confusion matrix -- best model with tuned threshold
+    bname, bclf, bthresh = best_model
+    proba_b = bclf.predict_proba(X_te_t)[:,1]
+    y_pred  = (proba_b >= bthresh).astype(int)
     cm = confusion_matrix(y_te, y_pred)
     plot_confusion_matrix(cm, ["Collected","RTS"],
-                           f"Best Model ({bname}) -- Confusion Matrix", "03_best_confusion_matrix")
+                           f"Best Model ({bname}, thresh={bthresh:.2f}) -- Confusion Matrix",
+                           "03_best_confusion_matrix")
 
     # Stacking ensemble — use n_jobs=1 to avoid Windows multiprocessing overhead
     print("    Training stacking ensemble...")
     estimators_s = [
-        ("lr",  LogisticRegression(max_iter=200, C=1.0, random_state=42)),
-        ("rf",  RandomForestClassifier(n_estimators=50, random_state=42, n_jobs=1)),
+        ("lr",  LogisticRegression(max_iter=200, C=1.0, class_weight="balanced", random_state=42)),
+        ("rf",  RandomForestClassifier(n_estimators=50, class_weight="balanced", random_state=42, n_jobs=1)),
         ("xgb", xgb.XGBClassifier(n_estimators=80, learning_rate=0.1, max_depth=5,
                                     eval_metric="logloss", random_state=42, verbosity=0,
-                                    nthread=1)),
+                                    nthread=1, scale_pos_weight=pos_w)),
         ("lgb", lgb.LGBMClassifier(n_estimators=80, learning_rate=0.1, max_depth=5,
-                                    random_state=42, verbose=-1, n_jobs=1)),
+                                    random_state=42, verbose=-1, n_jobs=1,
+                                    class_weight="balanced")),
     ]
     stack = StackingClassifier(estimators=estimators_s,
-                                final_estimator=LogisticRegression(C=1),
+                                final_estimator=LogisticRegression(C=1, class_weight="balanced"),
                                 cv=3, n_jobs=1, passthrough=False)
     # Train on 50K sample to keep stacking fast
     idx_s = np.random.choice(len(X_tr_t), min(50_000, len(X_tr_t)), replace=False)

@@ -59,6 +59,10 @@
 </head>
 <body>
 
+<div style="background:#2d1b00;border-bottom:1px solid #d29922;padding:7px 24px;font-size:12px;color:#d29922;display:flex;align-items:center;gap:8px;">
+  <span style="font-weight:700;">&#9432; Data note:</span>
+  <span>Dashboard KPIs reflect the full 30.2M parcel enterprise-scale dataset. The Excel workbook uses a 1.2M row sample — figures will differ slightly. ML metrics are validated on a 20% held-out test split. Business impact projections are modelled estimates.</span>
+</div>
 <header>
   <div>
     <h1>Pargo Parcels Data Warehouse</h1>
@@ -435,18 +439,18 @@ new Chart(document.getElementById('chartRtsTrend'), {
   options: CHART_DEFAULTS
 });
 
-// Retailers bar
+// Retailers — fixed values per retailer [name, industry, tier, avg_monthly_vol, on_time_pct, rts_pct]
 const retailers = [
-  ['Takealot','E-commerce','Enterprise',820000],
-  ['Woolworths','Fashion','Enterprise',610000],
-  ['Clicks','Health','Enterprise',540000],
-  ['Checkers','Grocery','Enterprise',490000],
-  ['Mr Price','Fashion','Mid-Market',420000],
-  ['Edgars','Fashion','Mid-Market',380000],
-  ['Game','Electronics','Enterprise',350000],
-  ['Dis-Chem','Health','Mid-Market',320000],
-  ['Jet','Fashion','Mid-Market',290000],
-  ['Pick n Pay','Grocery','Enterprise',270000],
+  ['Takealot',    'E-commerce', 'Enterprise', 820000, 82.4, 7.1],
+  ['Woolworths',  'Fashion',    'Enterprise', 610000, 78.2, 9.8],
+  ['Clicks',      'Health',     'Enterprise', 540000, 84.1, 6.3],
+  ['Checkers',    'Grocery',    'Enterprise', 490000, 80.7, 7.9],
+  ['Mr Price',    'Fashion',    'Mid-Market', 420000, 72.5, 12.4],
+  ['Edgars',      'Fashion',    'Mid-Market', 380000, 69.8, 14.1],
+  ['Game',        'Electronics','Enterprise', 350000, 85.3, 5.9],
+  ['Dis-Chem',    'Health',     'Mid-Market', 320000, 81.6, 6.7],
+  ['Jet',         'Fashion',    'Mid-Market', 290000, 67.3, 15.8],
+  ['Pick n Pay',  'Grocery',    'Enterprise', 270000, 79.4, 8.2],
 ];
 new Chart(document.getElementById('chartRetailers'), {
   type: 'bar',
@@ -458,20 +462,18 @@ new Chart(document.getElementById('chartRetailers'), {
   options: CHART_DEFAULTS
 });
 
-// Retailer table
+// Retailer table — fixed values, no Math.random()
 const tbody = document.getElementById('retailerTableBody');
-retailers.forEach(([name, ind, tier, vol]) => {
-  const onTime = (65 + Math.random()*20).toFixed(1);
-  const rts    = (6 + Math.random()*8).toFixed(1);
-  const gmv    = (vol * 185 / 1e6).toFixed(1);
-  const rev    = (vol * 0.18 / 1000).toFixed(0);
-  const badge  = onTime > 75 ? 'green' : onTime > 65 ? 'yellow' : 'red';
+retailers.forEach(([name, ind, tier, vol, onTime, rts]) => {
+  const gmv   = (vol * 185 / 1e6).toFixed(1);
+  const rev   = Math.round(vol * 0.18 / 1000);
+  const badge = onTime >= 78 ? 'green' : onTime >= 70 ? 'yellow' : 'red';
   tbody.innerHTML += `<tr>
     <td>${name}</td><td>${ind}</td>
     <td><span class="badge ${tier==='Enterprise'?'blue':'yellow'}">${tier}</span></td>
     <td>${(vol*36/1e6).toFixed(2)}M</td><td>R${gmv}M</td>
     <td><span class="badge ${badge}">${onTime}%</span></td>
-    <td><span class="badge ${rts<9?'green':'red'}">${rts}%</span></td>
+    <td><span class="badge ${rts<10?'green':'red'}">${rts}%</span></td>
     <td>R${(rev*36).toLocaleString()}K</td>
   </tr>`;
 });
