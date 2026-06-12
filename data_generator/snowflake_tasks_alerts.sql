@@ -9,7 +9,7 @@ USE SCHEMA RAW;
 -- TASK 1: Nightly parcel status summary refresh
 -- -------------------------------------------------------
 CREATE OR REPLACE TASK PARGO_DW.RAW.TASK_NIGHTLY_PARCEL_SUMMARY
-  WAREHOUSE = LYRA_LOAD_WH
+  WAREHOUSE = PARGO_LOAD_WH
   SCHEDULE  = 'USING CRON 0 2 * * * Africa/Johannesburg'
 AS
   CREATE OR REPLACE TABLE PARGO_DW.MARTS.PARCEL_STATUS_DAILY_SUMMARY AS
@@ -30,7 +30,7 @@ AS
 -- TASK 2: Hourly RTS rate spike detection
 -- -------------------------------------------------------
 CREATE OR REPLACE TASK PARGO_DW.RAW.TASK_HOURLY_RTS_CHECK
-  WAREHOUSE = LYRA_LOAD_WH
+  WAREHOUSE = PARGO_LOAD_WH
   SCHEDULE  = 'USING CRON 0 * * * * Africa/Johannesburg'
 AS
   INSERT INTO PARGO_DW.RAW.RTS_SPIKE_LOG (CHECKED_AT, RTS_RATE_PCT, THRESHOLD_PCT, FLAGGED)
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS PARGO_DW.RAW.RTS_SPIKE_LOG (
 -- TASK 3: Daily SLA breach report
 -- -------------------------------------------------------
 CREATE OR REPLACE TASK PARGO_DW.RAW.TASK_DAILY_SLA_REPORT
-  WAREHOUSE = LYRA_LOAD_WH
+  WAREHOUSE = PARGO_LOAD_WH
   SCHEDULE  = 'USING CRON 30 6 * * * Africa/Johannesburg'
 AS
   CREATE OR REPLACE TABLE PARGO_DW.MARTS.SLA_DAILY_REPORT AS
@@ -76,7 +76,7 @@ AS
 -- ALERT: RTS spike exceeds 15%
 -- -------------------------------------------------------
 CREATE OR REPLACE ALERT PARGO_DW.RAW.ALERT_RTS_SPIKE
-  WAREHOUSE = LYRA_LOAD_WH
+  WAREHOUSE = PARGO_LOAD_WH
   SCHEDULE  = '60 MINUTE'
   IF (EXISTS (
       SELECT 1 FROM PARGO_DW.RAW.RTS_SPIKE_LOG
@@ -95,7 +95,7 @@ CREATE OR REPLACE ALERT PARGO_DW.RAW.ALERT_RTS_SPIKE
 -- ALERT: Tracking event volume drop (>50% below 7-day avg)
 -- -------------------------------------------------------
 CREATE OR REPLACE ALERT PARGO_DW.RAW.ALERT_EVENT_VOLUME_DROP
-  WAREHOUSE = LYRA_LOAD_WH
+  WAREHOUSE = PARGO_LOAD_WH
   SCHEDULE  = '60 MINUTE'
   IF (EXISTS (
       WITH hourly AS (

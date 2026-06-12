@@ -299,8 +299,25 @@ def gen_facts(scale, dims, out_root):
         dwell_h = RNG.gamma(1.6, 22, n_p)                  # ~35h avg dwell at point
         collected = notified + pd.to_timedelta(dwell_h, unit="h")
 
-        status = RNG.choice(["Collected", "ExpiredRTS", "Lost", "Damaged", "InTransit"],
-                            n_p, p=[P_COLLECTED, P_RTS, P_LOST, P_DAMAGED, P_IN_FLIGHT])
+        # RTS probability driven by real operational signals so ML models achieve realistic AUC
+        transit_h = h_dispatch + h_hub + h_linehaul + h_lastmile
+        prov_rts_base = {"Gauteng": 0.10, "Western Cape": 0.07, "KwaZulu-Natal": 0.13,
+                         "Eastern Cape": 0.18, "Limpopo": 0.26, "Mpumalanga": 0.19,
+                         "North West": 0.22, "Free State": 0.17, "Northern Cape": 0.27}
+        base_rts = np.array([prov_rts_base.get(pv, 0.12) for pv in p_prov])
+        ret_cats = retailers.retailer_category.values[p_ret_idx] if "retailer_category" in retailers.columns else np.full(n_p, "Other")
+        cat_mult = np.where(ret_cats == "Fashion", 1.35,
+                   np.where(ret_cats == "Electronics", 0.65,
+                   np.where(ret_cats == "Grocery", 0.80, 1.0)))
+        weight_mult = np.where(np.round(np.clip(RNG.lognormal(0.1, 0.9, n_p), 0.05, 30), 2) > 10, 1.3, 1.0)
+        transit_mult = 1.0 + np.clip((transit_h - 24) / 72, 0, 0.5)
+        dwell_mult   = 1.0 + np.clip((dwell_h   - 48) / 96, 0, 0.8)
+        rts_prob = np.clip(base_rts * cat_mult * weight_mult * transit_mult * dwell_mult, 0.01, 0.65)
+        rng_draw = RNG.random(n_p)
+        base_status = np.where(rng_draw < rts_prob, "ExpiredRTS",
+                      np.where(rng_draw < rts_prob + P_LOST, "Lost",
+                      np.where(rng_draw < rts_prob + P_LOST + P_DAMAGED, "Damaged", "Collected")))
+        status = base_status
         # parcels created near end of history skew in-flight
         recent = created > HISTORY_END - pd.Timedelta(days=4)
         status = np.where(recent & (RNG.random(n_p) < 0.6), "InTransit", status)

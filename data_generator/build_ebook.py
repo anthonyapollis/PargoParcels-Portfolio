@@ -1466,7 +1466,7 @@ def sec_platform(s):
         ("Account",      "Set via SNOWFLAKE_ACCOUNT environment variable (Africa/Cape Town region)"),
         ("Database",     "PARGO_DW"),
         ("Schemas",      "RAW (ingestion) | STAGING (DBT views) | MARTS (DBT tables) | ML_FEATURES"),
-        ("Warehouse",    "LYRA_LOAD_WH — auto-resume enabled, auto-suspend after 60 seconds"),
+        ("Warehouse",    "PARGO_LOAD_WH — auto-resume enabled, auto-suspend after 60 seconds"),
         ("File Format",  "Parquet with Snappy compression, partition-aware loading"),
         ("Stage",        "Internal named stage @BULK_STAGE for PUT + COPY INTO operations"),
         ("Clustering",   "FACT_PARCELS clustered on (LOAD_YEAR, LOAD_MONTH, PARCEL_STATUS)"),

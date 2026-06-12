@@ -7,7 +7,7 @@ pargo_dbt:
       user: "{{ env_var('SNOWFLAKE_USER') }}"
       password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
       role: "{{ env_var('SNOWFLAKE_ROLE', 'ACCOUNTADMIN') }}"
-      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'LYRA_LOAD_WH') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'PARGO_LOAD_WH') }}"
       database: "{{ env_var('SNOWFLAKE_DATABASE', 'PARGO_DW') }}"
       schema: STAGING
       threads: 4

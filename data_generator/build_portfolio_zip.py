@@ -15,8 +15,8 @@ ROOT = Path("..").resolve()
 
 FILES = [
     # Dashboards
-    ("pargo_dashboard.html",               "dashboard/pargo_dashboard.html"),
-    ("pargo_ml_visuals.html",              "dashboard/pargo_ml_visuals.html"),
+    ("pargo_dashboard.html",               "pargo_dashboard.html"),
+    ("pargo_ml_visuals.html",             "pargo_ml_visuals.html"),
     # Data Dictionary
     ("pargo_data_dictionary.md",           "docs/pargo_data_dictionary.md"),
     # DBT project

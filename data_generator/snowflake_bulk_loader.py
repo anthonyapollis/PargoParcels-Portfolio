@@ -17,7 +17,7 @@ SF = dict(
     user      = os.environ.get('SNOWFLAKE_USER',      'your-username'),
     password  = os.environ.get('SNOWFLAKE_PASSWORD',  ''),
     role      = os.environ.get('SNOWFLAKE_ROLE',      'ACCOUNTADMIN'),
-    warehouse = os.environ.get('SNOWFLAKE_WAREHOUSE', 'LYRA_LOAD_WH'),
+    warehouse = os.environ.get('SNOWFLAKE_WAREHOUSE', 'PARGO_LOAD_WH'),
     database  = os.environ.get('SNOWFLAKE_DATABASE',  'PARGO_DW'),
     schema    = os.environ.get('SNOWFLAKE_SCHEMA',    'RAW'),
 )

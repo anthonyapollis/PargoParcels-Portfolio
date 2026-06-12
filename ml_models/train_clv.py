@@ -50,7 +50,7 @@ plt.rcParams.update({
 
 SF = dict(account=os.environ.get("SNOWFLAKE_ACCOUNT", ""), user=os.environ.get("SNOWFLAKE_USER", ""),
           password=os.environ.get("SNOWFLAKE_PASSWORD", ""), role="ACCOUNTADMIN",
-          warehouse="LYRA_LOAD_WH", database="PARGO_DW", schema="RAW")
+          warehouse="PARGO_LOAD_WH", database="PARGO_DW", schema="RAW")
 
 PROVINCES = ["Gauteng","Western Cape","KwaZulu-Natal","Eastern Cape",
              "Limpopo","Mpumalanga","North West","Free State","Northern Cape"]
