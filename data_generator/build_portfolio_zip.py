@@ -99,6 +99,12 @@ OPTIONAL = [
     ("ml_models/plots/37_timeseries_correlation.png",    "ml_models/plots/37_timeseries_correlation.png"),
     ("ml_models/plots/38_multifeature_relationships.png","ml_models/plots/38_multifeature_relationships.png"),
     ("ml_models/train_correlation_charts.py",            "ml_models/train_correlation_charts.py"),
+    ("ml_models/train_sa_map.py",                        "ml_models/train_sa_map.py"),
+    ("ml_models/plots/pargo_logo.png",                   "ml_models/plots/pargo_logo.png"),
+    ("ml_models/plots/40_sa_province_map_ebook.png",     "ml_models/plots/40_sa_province_map_ebook.png"),
+    ("ml_models/plots/41_sa_province_map_dashboard.png", "ml_models/plots/41_sa_province_map_dashboard.png"),
+    ("excel/PargoParcels_Data_Workbook.xlsx",            "excel/PargoParcels_Data_Workbook.xlsx"),
+    ("README.md",                                        "README.md"),
 ]
 
 
