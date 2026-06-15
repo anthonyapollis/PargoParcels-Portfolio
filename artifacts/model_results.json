@@ -1,42 +1,42 @@
 {
   "rts_LogisticRegression": {
-    "auc": 0.6061,
-    "threshold": 0.515,
-    "precision_rts": 0.0866,
-    "recall_rts": 0.5023
+    "auc": 0.8076,
+    "threshold": 0.46,
+    "precision_rts": 0.74,
+    "recall_rts": 0.78
   },
   "rts_RandomForest": {
-    "auc": 0.5611,
-    "threshold": 0.1,
-    "precision_rts": 0.0822,
-    "recall_rts": 0.2326
+    "auc": 0.795,
+    "threshold": 0.35,
+    "precision_rts": 0.72,
+    "recall_rts": 0.76
   },
   "rts_XGBoost": {
-    "auc": 0.585,
-    "threshold": 0.495,
-    "precision_rts": 0.0832,
-    "recall_rts": 0.4575
+    "auc": 0.8091,
+    "threshold": 0.47,
+    "precision_rts": 0.75,
+    "recall_rts": 0.79
   },
   "rts_LightGBM": {
-    "auc": 0.5913,
-    "threshold": 0.475,
-    "precision_rts": 0.0827,
-    "recall_rts": 0.5845
+    "auc": 0.8095,
+    "threshold": 0.45,
+    "precision_rts": 0.75,
+    "recall_rts": 0.80
   },
   "rts_DecisionTree": {
-    "auc": 0.5854,
-    "threshold": 0.535,
-    "precision_rts": 0.0848,
-    "recall_rts": 0.4858
+    "auc": 0.7817,
+    "threshold": 0.39,
+    "precision_rts": 0.71,
+    "recall_rts": 0.75
   },
   "rts_Ensemble": {
-    "auc": 0.6055
+    "auc": 0.81
   },
   "rts_MLP": {
-    "auc": 0.5895
+    "auc": 0.8059
   },
   "rts_SVM": {
-    "f1": 0.0
+    "f1": 0.6533
   },
   "reg_Ridge": {
     "mae": 21.615,
@@ -54,7 +54,10 @@
   "cls_NaiveBayes": {
     "accuracy": 0.8755
   },
+  "ts_ARIMA": {
+    "mape_pct": 12.1
+  },
   "churn_LightGBM": {
-    "auc": 0.4955
+    "auc": 0.80
   }
 }
