@@ -277,19 +277,19 @@
 const models = [
   {name:"RTS Risk v1",algo:"Logistic Regression",use:"Binary: RTS prediction",metric:"ROC-AUC",score:"0.71",status:"Production"},
   {name:"RTS Risk v2",algo:"Random Forest",use:"Binary: RTS prediction",metric:"ROC-AUC",score:"0.82",status:"Production"},
-  {name:"RTS Risk v3",algo:"XGBoost",use:"Binary: RTS + feature importance",metric:"ROC-AUC",score:"0.87",status:"Champion"},
-  {name:"RTS Risk v4",algo:"LightGBM",use:"Binary: RTS prediction",metric:"ROC-AUC",score:"0.86",status:"Production"},
-  {name:"MLP Classifier",algo:"Neural Network (MLP)",use:"Binary: RTS deep learning",metric:"ROC-AUC",score:"0.83",status:"Production"},
-  {name:"SVM Classifier",algo:"LinearSVC",use:"Courier perf classification",metric:"F1 Macro",score:"0.76",status:"Production"},
-  {name:"Transit Regression",algo:"Ridge Regression",use:"Delivery time hours",metric:"MAE",score:"4.1h",status:"Staging"},
+  {name:"RTS Risk v3",algo:"XGBoost",use:"Binary: RTS + feature importance",metric:"ROC-AUC",score:"0.81",status:"Champion"},
+  {name:"RTS Risk v4",algo:"LightGBM",use:"Binary: RTS prediction",metric:"ROC-AUC",score:"0.81",status:"Production"},
+  {name:"MLP Classifier",algo:"Neural Network (MLP)",use:"Binary: RTS deep learning",metric:"ROC-AUC",score:"0.81",status:"Production"},
+  {name:"SVM Classifier",algo:"LinearSVC",use:"Courier perf classification",metric:"F1 Macro",score:"0.65",status:"Production"},
+  {name:"Transit Regression",algo:"Ridge Regression",use:"Delivery time hours",metric:"MAE",score:"21.6h",status:"Staging"},
   {name:"Customer Segments",algo:"K-Means (k=5)",use:"LTV customer segmentation",metric:"Silhouette",score:"0.68",status:"Production"},
   {name:"Anomaly Detector",algo:"Isolation Forest",use:"Parcel value / event anomalies",metric:"Anomaly %",score:"5%",status:"Production"},
   {name:"Return Classifier",algo:"Naive Bayes",use:"Return reason classification",metric:"Accuracy",score:"0.73",status:"Production"},
   {name:"Volume Forecast",algo:"Holt-Winters (ARIMA)",use:"Monthly parcel demand",metric:"MAPE 12.1% | R² 77.8% | RMSE 903",score:"12.1%",status:"Production"},
   {name:"Seasonal Decomp",algo:"Prophet-style",use:"Trend + seasonal decomposition",metric:"Visual",score:"N/A",status:"Production"},
-  {name:"Churn Predictor",algo:"LightGBM",use:"Customer churn binary",metric:"ROC-AUC",score:"0.79",status:"Production"},
-  {name:"Stacking Ensemble",algo:"Meta-learner (LR)",use:"Final RTS risk ensemble",metric:"ROC-AUC",score:"0.89",status:"Champion"},
-  {name:"MLP Regressor",algo:"Neural Net Regressor",use:"Transit time regression",metric:"MAE",score:"3.9h",status:"Staging"},
+  {name:"Churn Predictor",algo:"LightGBM",use:"Customer churn binary",metric:"ROC-AUC",score:"0.80",status:"Production"},
+  {name:"Stacking Ensemble",algo:"Meta-learner (LR)",use:"Final RTS risk ensemble",metric:"ROC-AUC",score:"0.81",status:"Champion"},
+  {name:"MLP Regressor",algo:"Neural Net Regressor",use:"Transit time regression",metric:"MAE",score:"21.6h",status:"Staging"},
 ];
 
 const grid = document.getElementById("modelGrid");

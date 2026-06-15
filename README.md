@@ -16,6 +16,8 @@ Built on **Snowflake + DBT + Python + XGBoost + LightGBM**.
 | ML models | 15 trained |
 | Best ROC-AUC | 0.81 (Stacking Ensemble) |
 
+> **Deliverables note:** The loose files in `PargoParcels_Portfolio_FINAL/` are the final ready-to-open deliverables (HTML dashboards, Excel workbook, PDF ebook, README). The ZIP (`PargoParcels_Portfolio_v2.zip`) contains the full source — DBT models, Python scripts, ML training code, and all generated artefacts.
+
 > **Dataset note:** Dashboard KPIs reflect the full 30.2M parcel enterprise-scale dataset.
 > The Excel workbook uses a 1.2M parcel representative sample for spreadsheet demonstration — totals and averages will differ slightly from the dashboard figures.
 > ML model metrics are validated on a held-out 20% test split of the training dataset.

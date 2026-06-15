@@ -530,7 +530,7 @@ new Chart(document.getElementById('chartMlAuc'), {
   data: {
     labels: ['Logistic Reg','Random Forest','XGBoost','LightGBM','MLP','SVM','Ensemble'],
     datasets: [{ label: 'ROC-AUC',
-      data: [0.71, 0.82, 0.87, 0.86, 0.83, 0.74, 0.89],
+      data: [0.81, 0.80, 0.81, 0.81, 0.80, 0.65, 0.81],
       backgroundColor: ['#58a6ff','#3fb950','#f85149','#d29922','#bc8cff','#58a6ff','#3fb950'],
       borderRadius: 2
     }]
@@ -558,19 +558,19 @@ new Chart(document.getElementById('chartFeatureImportance'), {
 const mlModels = [
   ['RTS Risk v1','Logistic Regression','Binary: RTS','6','ROC-AUC','0.71','Production'],
   ['RTS Risk v2','Random Forest','Binary: RTS','8','ROC-AUC','0.82','Production'],
-  ['RTS Risk v3','XGBoost','Binary: RTS','8','ROC-AUC','0.87','Champion'],
-  ['RTS Risk v4','LightGBM','Binary: RTS','8','ROC-AUC','0.86','Production'],
+  ['RTS Risk v3','XGBoost','Binary: RTS','8','ROC-AUC','0.81','Champion'],
+  ['RTS Risk v4','LightGBM','Binary: RTS','8','ROC-AUC','0.81','Production'],
   ['Delay Pred','MLP Neural Net','Multiclass: delay band','10','F1 Macro','0.74','Staging'],
   ['Customer LTV','K-Means Clustering','5 segments','6','Silhouette','0.68','Production'],
-  ['Churn Pred','LightGBM','Binary: churn','9','PR-AUC','0.79','Production'],
-  ['Demand Forecast','Prophet','Monthly volume','Time series','MAPE','6.2%','Production'],
+  ['Churn Pred','LightGBM','Binary: churn','9','ROC-AUC','0.80','Production'],
+  ['Demand Forecast','Holt-Winters','Monthly volume','Time series','MAPE','12.1%','Production'],
   ['Anomaly Det.','Isolation Forest','Anomaly score','7','F1','0.81','Production'],
   ['Return Reason','Naive Bayes','Multiclass: reason','5','Accuracy','0.73','Production'],
-  ['Delivery Time','Ridge Regression','Regression: hours','8','RMSE','4.1h','Staging'],
+  ['Delivery Time','Ridge Regression','Regression: hours','8','MAE','21.6h','Staging'],
   ['Courier Score','SVM','Multiclass: tier','6','F1 Macro','0.76','Production'],
   ['Value Fraud','Autoencoder','Anomaly: value','4','AUC','0.83','Staging'],
   ['SLA Breach','Decision Tree','Binary: breach','7','F1','0.77','Production'],
-  ['RTS Ensemble','Stacking Ensemble','Binary: RTS','15','ROC-AUC','0.89','Champion'],
+  ['RTS Ensemble','Stacking Ensemble','Binary: RTS','15','ROC-AUC','0.81','Champion'],
 ];
 const mlTbody = document.getElementById('mlTableBody');
 mlModels.forEach(([name,algo,target,feats,metric,score,status]) => {
