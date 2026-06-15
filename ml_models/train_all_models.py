@@ -153,31 +153,55 @@ def make_synthetic_data(n=200_000):
     services = ["STANDARD","EXPRESS","ECONOMY","SAME_DAY"]
     years = [2023, 2024, 2025, 2026]
 
+    # Generate raw feature arrays first so we can build correlated RTS label
+    weight      = np.random.exponential(3, n).clip(0.1, 50)
+    value       = np.random.exponential(800, n).clip(50, 20000)
+    transit_h   = np.random.gamma(2, 20, n).clip(4, 200)
+    dwell_days  = np.random.exponential(3, n).clip(0, 30)
+    exception_c = np.random.poisson(0.4, n).clip(0, 10)
+    province_arr   = np.random.choice(provinces, n)
+    tier_arr       = np.random.choice(tiers, n, p=[.4,.45,.15])
+    service_arr    = np.random.choice(services, n, p=[.55,.25,.15,.05])
+    segment_arr    = np.random.choice(segments, n, p=[.2,.4,.3,.1])
+
+    # Strong multiplicative RTS signal (mirroring generate_pargo_data.py)
+    prov_base = {"Gauteng":0.07,"Western Cape":0.05,"KZN":0.09,
+                 "Eastern Cape":0.13,"Limpopo":0.22,"Mpumalanga":0.15,
+                 "North West":0.18,"Free State":0.14,"Northern Cape":0.24}
+    base_rts = np.array([prov_base.get(p, 0.10) for p in province_arr])
+
+    tier_mult = np.where(tier_arr=="SMB", 2.0, np.where(tier_arr=="Mid-Market", 1.3, 0.75))
+    svc_mult  = np.where(service_arr=="ECONOMY", 1.6,
+                np.where(service_arr=="STANDARD", 1.0,
+                np.where(service_arr=="EXPRESS", 0.7, 0.5)))
+    exc_mult  = 1.0 + 2.5 * exception_c                       # strongest driver
+    dwell_mult= 1.0 + np.clip((dwell_days - 3) / 5, 0, 2.0)
+    transit_mult = 1.0 + np.clip((transit_h - 24) / 48, 0, 1.5)
+    val_mult  = np.where(value > 2000, 1.4, np.where(value < 200, 0.8, 1.0))
+    seg_mult  = np.where(segment_arr=="New", 1.5, np.where(segment_arr=="Occasional", 1.2, 1.0))
+
+    rts_prob = np.clip(
+        base_rts * tier_mult * svc_mult * exc_mult * dwell_mult * transit_mult * val_mult * seg_mult,
+        0.01, 0.80
+    )
+
     df = pd.DataFrame({
-        "PARCEL_ID": np.arange(n),
-        "PARCEL_WEIGHT_KG":      np.random.exponential(3, n).clip(0.1, 50),
-        "PARCEL_VALUE_ZAR":      np.random.exponential(800, n).clip(50, 20000),
+        "PARCEL_ID":             np.arange(n),
+        "PARCEL_WEIGHT_KG":      weight,
+        "PARCEL_VALUE_ZAR":      value,
         "DELIVERY_COST_ZAR":     np.random.uniform(15, 80, n),
-        "TRANSIT_HOURS":         np.random.gamma(2, 20, n).clip(4, 200),
-        "DWELL_DAYS":            np.random.exponential(3, n).clip(0, 30),
-        "PROVINCE":              np.random.choice(provinces, n),
-        "SERVICE_TYPE":          np.random.choice(services, n, p=[.55,.25,.15,.05]),
+        "TRANSIT_HOURS":         transit_h,
+        "DWELL_DAYS":            dwell_days,
+        "PROVINCE":              province_arr,
+        "SERVICE_TYPE":          service_arr,
         "LOAD_YEAR":             np.random.choice(years, n),
-        "RETAILER_TIER":         np.random.choice(tiers, n, p=[.4,.45,.15]),
-        "CUSTOMER_SEGMENT":      np.random.choice(segments, n, p=[.2,.4,.3,.1]),
+        "RETAILER_TIER":         tier_arr,
+        "CUSTOMER_SEGMENT":      segment_arr,
         "ACTIVE_FLAG":           np.random.choice([True, False], n, p=[.7,.3]),
         "TRACKING_EVENT_COUNT":  np.random.poisson(5, n).clip(0, 30),
-        "EXCEPTION_COUNT":       np.random.poisson(0.3, n).clip(0, 10),
+        "EXCEPTION_COUNT":       exception_c,
         "TARGET_VALUE":          np.random.exponential(800, n).clip(50, 20000),
     })
-    # RTS label: driven by exceptions, long dwell, rural provinces
-    rts_prob = (
-        0.04
-        + 0.06 * (df["EXCEPTION_COUNT"] > 1).astype(float)
-        + 0.04 * (df["DWELL_DAYS"] > 7).astype(float)
-        + 0.03 * df["PROVINCE"].isin(["Limpopo","Northern Cape","North West"]).astype(float)
-        + 0.03 * (df["RETAILER_TIER"] == "SMB").astype(float)
-    ).clip(0, 0.35)
     df["LABEL_IS_RTS"] = (np.random.random(n) < rts_prob).astype(int)
 
     n2 = 100_000
@@ -690,7 +714,7 @@ def train_forecasting(df):
     # Holt-Winters smoothing as ARIMA proxy
     from statsmodels.tsa.holtwinters import ExponentialSmoothing
     hw = ExponentialSmoothing(train_v, trend="add", seasonal="add",
-                               seasonal_periods=12).fit(disp=False)
+                               seasonal_periods=12).fit()
     fc = hw.forecast(6)
     ci_r = 1.645 * train_v.std()
     mape = np.mean(np.abs((test_v - fc) / test_v)) * 100
@@ -807,7 +831,7 @@ def build_model_summary():
     tbl.set_fontsize(8)
     for (r,c), cell in tbl.get_celld().items():
         if r == 0:
-            cell.set_facecolor(ACCENT.lstrip("#"))
+            cell.set_facecolor(PALETTE[2].lstrip("#"))
             cell.set_text_props(color="white", fontweight="bold")
         else:
             cell.set_facecolor("#1F2937" if r%2==0 else "#111827")
@@ -872,15 +896,21 @@ def main():
     print(f"  RTS rate: {df['LABEL_IS_RTS'].mean():.3%}")
 
     X_tr, X_te, y_tr, y_te, feats = train_rts_models(df)
-    train_mlp_rts(X_tr, X_te, y_tr, y_te)
-    train_svm(X_tr, X_te, y_tr, y_te)
-    train_delivery_time_regression(df)
-    train_customer_segmentation(df_cust)
-    train_anomaly_detection(df)
-    train_naive_bayes_returns(df)
-    train_forecasting(df)
-    train_lightgbm_churn(df_cust)
-    build_model_summary()
+    for fn, args in [
+        (train_mlp_rts, (X_tr, X_te, y_tr, y_te)),
+        (train_svm, (X_tr, X_te, y_tr, y_te)),
+        (train_delivery_time_regression, (df,)),
+        (train_customer_segmentation, (df_cust,)),
+        (train_anomaly_detection, (df,)),
+        (train_naive_bayes_returns, (df,)),
+        (train_forecasting, (df,)),
+        (train_lightgbm_churn, (df_cust,)),
+        (build_model_summary, ()),
+    ]:
+        try:
+            fn(*args)
+        except Exception as e:
+            print(f"  [WARN] {fn.__name__} failed: {e}")
 
     # Save results JSON
     results_path = ARTS / "model_results.json"

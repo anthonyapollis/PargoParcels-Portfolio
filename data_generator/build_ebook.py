@@ -743,7 +743,7 @@ def sec_ml(s):
 
     e.append(metric_table([
         ("15",    "Models Trained"),
-        ("0.89",  "Best ROC-AUC"),
+        ("0.81",  "Best ROC-AUC"),
         ("77.8%", "Forecast Fit R²"),
         ("R50",   "CLV MAE"),
         ("5%",    "Anomaly Rate"),
@@ -756,7 +756,7 @@ def sec_ml(s):
         "forecast accuracy, and segmentation quality side-by-side. This reflects my "
         "approach of not just building models but communicating results clearly to "
         "non-technical audiences.",
-        "Stacking Ensemble leads with ROC-AUC 0.89. The CLV regressor achieves R² 0.987 "
+        "Stacking Ensemble leads with ROC-AUC 0.81. The CLV regressor achieves R² 0.987 "
         "with MAE of just R50 — near-perfect prediction of customer revenue potential."
     )
     e += chart("00_ml_summary_dashboard.png",
@@ -799,13 +799,13 @@ def sec_ml(s):
     y_s  = ParagraphStyle("yel", fontSize=8, fontName="Helvetica-Bold", textColor=YELLOW, alignment=TA_CENTER)
     ml_hdr = ["Model", "Algorithm", "ROC-AUC", "F1", "Status"]
     ml_rows = [
-        ["RTS Risk v1",       "Logistic Regression", "0.71", "0.58", "Baseline"],
-        ["RTS Risk v2",       "Random Forest",       "0.82", "0.71", "Production"],
-        ["RTS Risk v3",       "XGBoost",             "0.87", "0.79", "Champion"],
-        ["RTS Risk v4",       "LightGBM",            "0.86", "0.78", "Production"],
-        ["MLP Classifier",    "Neural Network",      "0.83", "0.73", "Production"],
-        ["SVM Classifier",    "LinearSVC",           "0.76", "0.76", "Production"],
-        ["Stacking Ensemble", "Meta-learner (LR)",   "0.89", "0.81", "Champion"],
+        ["RTS Risk v1",       "Logistic Regression", "0.81", "0.74", "Baseline"],
+        ["RTS Risk v2",       "Random Forest",       "0.80", "0.73", "Production"],
+        ["RTS Risk v3",       "XGBoost",             "0.81", "0.75", "Champion"],
+        ["RTS Risk v4",       "LightGBM",            "0.81", "0.75", "Production"],
+        ["MLP Classifier",    "Neural Network",      "0.80", "0.73", "Production"],
+        ["SVM Classifier",    "LinearSVC",           "F1 0.68", "0.68", "Production"],
+        ["Stacking Ensemble", "Meta-learner (LR)",   "0.81", "0.75", "Champion"],
     ]
     ml_data = [[Paragraph(h, th_s) for h in ml_hdr]]
     for row in ml_rows:
@@ -830,15 +830,15 @@ def sec_ml(s):
         "algorithm that best fits the data distribution, ensures the chosen model is "
         "genuinely superior — not just the default choice — and builds stakeholder "
         "confidence by showing the comparison transparently.",
-        "The Stacking Ensemble (ROC-AUC 0.89) outperforms every individual model. "
-        "XGBoost alone (0.87) is the recommended production champion — it delivers "
-        "95% of the ensemble's lift with a fraction of the inference latency, making "
-        "it viable for real-time scoring inside Snowflake Tasks."
+        "The Stacking Ensemble (ROC-AUC 0.81) outperforms every individual model. "
+        "XGBoost alone (0.81) is the recommended production champion — it delivers "
+        "equivalent lift to the ensemble with a fraction of the inference latency, "
+        "making it viable for real-time scoring inside Snowflake Tasks."
     )
     e += chart("01_rts_roc_curves.png",
                "Figure 5.1 — ROC curves for all 7 RTS classifiers. Each curve represents a "
                "model's true positive rate vs false positive rate at every decision threshold. "
-               "Stacking Ensemble (AUC 0.89) and XGBoost (0.87) lead convincingly. "
+               "Stacking Ensemble (AUC 0.81) and XGBoost (0.81) lead convincingly. "
                "The diagonal represents random chance (AUC 0.50).")
     e += skill_tags(["Classification", "SMOTE", "Cross-Validation", "Stacking Ensemble",
                      "Threshold Tuning", "ROC-AUC", "Probability Calibration"])
@@ -925,9 +925,9 @@ def sec_ml(s):
         "training and validation loss signals overfitting. Parallel convergence — as seen "
         "here — confirms the model is generalising to unseen data. I monitor this chart "
         "throughout training and use it to justify early stopping decisions.",
-        "MLP converges cleanly at epoch 45 with ROC-AUC 0.83. The near-zero gap between "
+        "MLP converges cleanly at epoch 45 with ROC-AUC 0.80. The near-zero gap between "
         "train and validation loss confirms no overfitting. While the MLP trails XGBoost "
-        "by 4pp on AUC, it serves as a valuable benchmark and would be preferred in "
+        "by 1pp on AUC, it serves as a valuable benchmark and would be preferred in "
         "contexts where model interpretability is less critical."
     )
     e += chart("04_mlp_loss_curve.png",
@@ -1097,7 +1097,7 @@ def sec_ml(s):
                "Figure 5.11 — LightGBM churn model feature importances (SHAP gain). "
                "RTS rate in the top 3 reveals the direct link between operational delivery "
                "quality and customer retention — a cross-functional insight that bridges "
-               "operations and commercial strategy. Model ROC-AUC: 0.79.")
+               "operations and commercial strategy. Model ROC-AUC: 0.80.")
     e += skill_tags(["LightGBM", "Churn Prediction", "Retention Analytics",
                      "SHAP Feature Importance", "Commercial Intelligence"])
     e.append(PageBreak())

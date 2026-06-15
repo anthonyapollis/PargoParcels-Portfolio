@@ -14,7 +14,7 @@ Built on **Snowflake + DBT + Python + XGBoost + LightGBM**.
 | Data window | July 2023 – June 2026 (36 months) |
 | Provinces | All 9 SA provinces |
 | ML models | 15 trained |
-| Best ROC-AUC | 0.89 (Stacking Ensemble) |
+| Best ROC-AUC | 0.81 (Stacking Ensemble) |
 
 > **Dataset note:** Dashboard KPIs reflect the full 30.2M parcel enterprise-scale dataset.
 > The Excel workbook uses a 1.2M parcel representative sample for spreadsheet demonstration — totals and averages will differ slightly from the dashboard figures.
@@ -85,11 +85,11 @@ PargoParcels/
 
 | # | Model | Algorithm | Metric | Score |
 |---|-------|-----------|--------|-------|
-| 1 | RTS Risk v1 | Logistic Regression | ROC-AUC | 0.71 |
-| 2 | RTS Risk v2 | Random Forest | ROC-AUC | 0.82 |
-| 3 | RTS Risk v3 (Champion) | XGBoost | ROC-AUC | 0.87 |
-| 4 | RTS Risk v4 | LightGBM | ROC-AUC | 0.86 |
-| 5 | MLP Classifier | Neural Network | ROC-AUC | 0.83 |
+| 1 | RTS Risk v1 | Logistic Regression | ROC-AUC | 0.81 |
+| 2 | RTS Risk v2 | Random Forest | ROC-AUC | 0.80 |
+| 3 | RTS Risk v3 (Champion) | XGBoost | ROC-AUC | 0.81 |
+| 4 | RTS Risk v4 | LightGBM | ROC-AUC | 0.81 |
+| 5 | MLP Classifier | Neural Network | ROC-AUC | 0.80 |
 | 6 | SVM Classifier | LinearSVC | F1 Macro | 0.76 |
 | 7 | Transit Regression | Ridge Regression | MAE | 4.1h |
 | 8 | Customer Segments | K-Means (k=5) | Silhouette | 0.68 |
@@ -97,8 +97,8 @@ PargoParcels/
 | 10 | Return Classifier | Naive Bayes | Accuracy | 0.73 |
 | 11 | Volume Forecast | Holt-Winters | MAPE | 12.1% |
 | 12 | Seasonal Decomp | Prophet-style | R² | 77.8% |
-| 13 | Churn Predictor | LightGBM | ROC-AUC | 0.79 |
-| 14 | Stacking Ensemble (Champion) | Meta-learner | ROC-AUC | 0.89 |
+| 13 | Churn Predictor | LightGBM | ROC-AUC | 0.80 |
+| 14 | Stacking Ensemble (Champion) | Meta-learner | ROC-AUC | 0.81 |
 | 15 | CLV Regressor | XGBoost | R² | 0.987 |
 
 ## Getting Started
