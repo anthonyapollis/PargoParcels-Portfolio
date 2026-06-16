@@ -88,7 +88,7 @@
 <header>
   <div>
     <h1>Pargo Parcels Data Warehouse</h1>
-    <span>Portfolio Project -- 30M parcels | 150M tracking events | 36 months | Snowflake + DBT</span>
+    <span>Portfolio Project -- 30M parcels | 210M tracking events | 36 months | Snowflake + DBT</span>
   </div>
 </header>
 
@@ -111,18 +111,18 @@
     </div>
     <div class="kpi">
       <div class="label">Tracking Events</div>
-      <div class="value" style="color:var(--purple)">152.8M</div>
+      <div class="value" style="color:var(--purple)">210M</div>
       <div class="delta up">+9.1% YoY</div>
     </div>
     <div class="kpi">
       <div class="label">Avg Collection Rate</div>
-      <div class="value" style="color:var(--green)">78.4%</div>
+      <div class="value" style="color:var(--green)">91.9%</div>
       <div class="delta up">+2.1pp vs prior year</div>
     </div>
     <div class="kpi">
       <div class="label">RTS Rate</div>
-      <div class="value" style="color:var(--red)">8.7%</div>
-      <div class="delta down">+0.4pp vs target (8.3%)</div>
+      <div class="value" style="color:var(--red)">5.5%</div>
+      <div class="delta down">+0.3pp vs target (5.2%)</div>
     </div>
     <div class="kpi">
       <div class="label">Avg Transit Hours</div>
@@ -463,16 +463,16 @@ new Chart(document.getElementById('chartRtsTrend'), {
 
 // Retailers — fixed values per retailer [name, industry, tier, avg_monthly_vol, on_time_pct, rts_pct]
 const retailers = [
-  ['Takealot',    'E-commerce', 'Enterprise', 820000, 82.4, 7.1],
-  ['Woolworths',  'Fashion',    'Enterprise', 610000, 78.2, 9.8],
-  ['Clicks',      'Health',     'Enterprise', 540000, 84.1, 6.3],
-  ['Checkers',    'Grocery',    'Enterprise', 490000, 80.7, 7.9],
-  ['Mr Price',    'Fashion',    'Mid-Market', 420000, 72.5, 12.4],
-  ['Edgars',      'Fashion',    'Mid-Market', 380000, 69.8, 14.1],
-  ['Game',        'Electronics','Enterprise', 350000, 85.3, 5.9],
-  ['Dis-Chem',    'Health',     'Mid-Market', 320000, 81.6, 6.7],
-  ['Jet',         'Fashion',    'Mid-Market', 290000, 67.3, 15.8],
-  ['Pick n Pay',  'Grocery',    'Enterprise', 270000, 79.4, 8.2],
+  ['Bash',           'Fashion & Apparel', 'Enterprise', 820000, 88.2, 4.8],
+  ['Woolworths',     'Retail - Premium',  'Enterprise', 610000, 91.4, 3.9],
+  ['Clicks',         'Health & Beauty',   'Enterprise', 540000, 89.7, 4.2],
+  ['Sportscene',     'Fashion & Apparel', 'Enterprise', 490000, 86.3, 5.1],
+  ['Cape Union Mart','Outdoor & Sport',   'Mid-Market', 420000, 84.8, 5.6],
+  ['Superbalist',    'Fashion & Apparel', 'Mid-Market', 380000, 83.1, 6.1],
+  ['Cotton On',      'Fashion & Apparel', 'Mid-Market', 350000, 85.5, 5.4],
+  ['OneDayOnly',     'General Retail',    'Mid-Market', 320000, 80.9, 6.8],
+  ['FILA South Africa','Fashion & Apparel','SMB',       290000, 78.4, 7.2],
+  ['Loot',           'General Retail',    'SMB',        270000, 76.7, 7.9],
 ];
 new Chart(document.getElementById('chartRetailers'), {
   type: 'bar',

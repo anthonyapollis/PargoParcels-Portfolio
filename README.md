@@ -22,7 +22,7 @@ Raw Parquet → Snowflake → dbt → 15 ML Models → Interactive Dashboard
 
 | | |
 |--|--|
-| 📦 **30.2 million** parcels | 📡 **152.8 million** tracking events |
+| 📦 **30.2 million** parcels | 📡 **210 million** tracking events |
 | 🗓 **36 months** of data (Jul 2023 – Jun 2026) | 🗺 **9** SA provinces |
 | 🤖 **15** ML models trained | 🏆 **0.81** ROC-AUC (Stacking Ensemble) |
 | 💰 **R10.1M** projected RTS cost saving | 📊 **6-tab** interactive dashboard |
