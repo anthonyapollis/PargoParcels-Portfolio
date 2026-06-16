@@ -551,7 +551,15 @@ new Chart(document.getElementById('chartFeatureImportance'), {
       backgroundColor: '#58a6ff', borderRadius: 2
     }]
   },
-  options: { ...CHART_DEFAULTS, indexAxis: 'y' }
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: CHART_DEFAULTS.plugins,
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x, beginAtZero: true, max: 0.35 },
+      y: { ...CHART_DEFAULTS.scales.y }
+    }
+  }
 });
 
 // ML table
