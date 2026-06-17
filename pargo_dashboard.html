@@ -170,9 +170,9 @@
 <div id="tab-operations" class="tab">
   <div class="kpi-grid">
     <div class="kpi">
-      <div class="label">On-Time Collection</div>
+      <div class="label">On-Time Collection SLA</div>
       <div class="value" style="color:var(--green)">71.3%</div>
-      <div class="delta">(dwell &lt;= 5 days)</div>
+      <div class="delta">(dwell &le;5 days, collection SLA)</div>
     </div>
     <div class="kpi">
       <div class="label">Avg Transit Hours</div>
@@ -229,9 +229,9 @@
 <div id="tab-sla" class="tab">
   <div class="kpi-grid">
     <div class="kpi">
-      <div class="label">SLA Compliance</div>
+      <div class="label">On-Time Collection SLA</div>
       <div class="value" style="color:var(--green)">71.3%</div>
-      <div class="delta">dwell &lt;= 5 days</div>
+      <div class="delta">dwell &le;5 days (collection SLA)</div>
     </div>
     <div class="kpi">
       <div class="label">Long Dwell (&gt;7d)</div>
@@ -528,9 +528,9 @@ new Chart(document.getElementById('chartBreachProvince'), {
 new Chart(document.getElementById('chartMlAuc'), {
   type: 'bar',
   data: {
-    labels: ['Logistic Reg','Random Forest','XGBoost','LightGBM','MLP','SVM','Ensemble'],
+    labels: ['Logistic Reg','Random Forest','XGBoost','LightGBM','MLP','Decision Tree','Ensemble'],
     datasets: [{ label: 'ROC-AUC',
-      data: [0.81, 0.80, 0.81, 0.81, 0.80, 0.65, 0.81],
+      data: [0.808, 0.795, 0.809, 0.810, 0.806, 0.782, 0.810],
       backgroundColor: ['#58a6ff','#3fb950','#f85149','#d29922','#bc8cff','#58a6ff','#3fb950'],
       borderRadius: 2
     }]
@@ -564,21 +564,21 @@ new Chart(document.getElementById('chartFeatureImportance'), {
 
 // ML table
 const mlModels = [
-  ['RTS Risk v1','Logistic Regression','Binary: RTS','6','ROC-AUC','0.71','Production'],
-  ['RTS Risk v2','Random Forest','Binary: RTS','8','ROC-AUC','0.82','Production'],
-  ['RTS Risk v3','XGBoost','Binary: RTS','8','ROC-AUC','0.81','Champion'],
-  ['RTS Risk v4','LightGBM','Binary: RTS','8','ROC-AUC','0.81','Production'],
-  ['Delay Pred','MLP Neural Net','Multiclass: delay band','10','F1 Macro','0.74','Staging'],
-  ['Customer LTV','K-Means Clustering','5 segments','6','Silhouette','0.68','Production'],
+  ['RTS Risk v1','Logistic Regression','Binary: RTS','6','ROC-AUC','0.808','Production'],
+  ['RTS Risk v2','Random Forest','Binary: RTS','8','ROC-AUC','0.795','Production'],
+  ['RTS Risk v3','XGBoost','Binary: RTS','8','ROC-AUC','0.809','Champion'],
+  ['RTS Risk v4','LightGBM','Binary: RTS','8','ROC-AUC','0.810','Production'],
+  ['RTS Risk MLP','MLP Neural Net','Binary: RTS','13','ROC-AUC','0.806','Production'],
+  ['Customer LTV','K-Means Clustering','5 segments','6','Silhouette','0.17','Production'],
   ['Churn Pred','LightGBM','Binary: churn','9','ROC-AUC','0.80','Production'],
   ['Demand Forecast','Holt-Winters','Monthly volume','Time series','MAPE','12.1%','Production'],
-  ['Anomaly Det.','Isolation Forest','Anomaly score','7','F1','0.81','Production'],
-  ['Return Reason','Naive Bayes','Multiclass: reason','5','Accuracy','0.73','Production'],
+  ['Anomaly Det.','Isolation Forest','Anomaly score','5','Anomaly %','5.0%','Production'],
+  ['Return Reason','Naive Bayes','Multiclass: reason','5','Accuracy','0.88','Production'],
   ['Delivery Time','Ridge Regression','Regression: hours','8','MAE','21.6h','Staging'],
-  ['Courier Score','SVM','Multiclass: tier','6','F1 Macro','0.76','Production'],
-  ['Value Fraud','Autoencoder','Anomaly: value','4','AUC','0.83','Staging'],
-  ['SLA Breach','Decision Tree','Binary: breach','7','F1','0.77','Production'],
-  ['RTS Ensemble','Stacking Ensemble','Binary: RTS','15','ROC-AUC','0.81','Champion'],
+  ['RTS Risk SVM','Linear SVC','Binary: RTS','8','F1','0.65','Production'],
+  ['Delivery Time MLP','MLP Regressor','Regression: hours','7','MAE','21.9h','Staging'],
+  ['RTS Risk DT','Decision Tree','Binary: RTS','13','ROC-AUC','0.782','Production'],
+  ['RTS Ensemble','Stacking Ensemble','Binary: RTS','15','ROC-AUC','0.810','Champion'],
 ];
 const mlTbody = document.getElementById('mlTableBody');
 mlModels.forEach(([name,algo,target,feats,metric,score,status]) => {

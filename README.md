@@ -25,7 +25,7 @@ Raw Parquet → Snowflake → dbt → 15 ML Models → Interactive Dashboard
 | 📦 **30.2 million** parcels | 📡 **210 million** tracking events |
 | 🗓 **36 months** of data (Jul 2023 – Jun 2026) | 🗺 **9** SA provinces |
 | 🤖 **15** ML models trained | 🏆 **0.81** ROC-AUC (Stacking Ensemble) |
-| 💰 **R10.1M** projected RTS cost saving | 📊 **6-tab** interactive dashboard |
+| 💰 **R10.1M** projected RTS cost saving (5.5% baseline, ML intervention scenario) | 📊 **6-tab** interactive dashboard |
 
 ---
 
@@ -103,11 +103,11 @@ python ml_models/train_all_models.py
 ## 📊 Dashboard Tabs
 
 1. **Overview** — KPIs, volume trend, province map
-2. **RTS Analysis** — Return-to-sender deep dive by cause & province
-3. **Carrier Performance** — SLA compliance, on-time rates
-4. **Customer Segments** — K-Means cluster profiles
-5. **ML Models** — AUC comparison, confusion matrices
-6. **Business Case** — ROI projections, cost-saving scenarios
+2. **Operations** — Transit hours, dwell days, courier exceptions
+3. **Retailers** — Revenue ranking, SLA compliance by retailer tier
+4. **SLA** — Breach types, long-dwell parcels, slow-transit rates
+5. **ML Models** — ROC-AUC comparison, feature importance, model inventory
+6. **Architecture** — Data pipeline layers, dbt model graph, tech stack
 
 ---
 
