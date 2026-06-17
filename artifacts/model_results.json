@@ -54,7 +54,7 @@
   "cls_NaiveBayes": {
     "accuracy": 0.8755
   },
-  "ts_ARIMA": {
+  "ts_HoltWinters": {
     "mape_pct": 12.1
   },
   "churn_LightGBM": {

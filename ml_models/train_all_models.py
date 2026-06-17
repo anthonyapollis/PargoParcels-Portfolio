@@ -718,8 +718,8 @@ def train_forecasting(df):
     fc = hw.forecast(6)
     ci_r = 1.645 * train_v.std()
     mape = np.mean(np.abs((test_v - fc) / test_v)) * 100
-    print(f"    ARIMA/HW MAPE={mape:.2f}%")
-    RESULTS["ts_ARIMA"] = {"mape_pct": round(mape,3)}
+    print(f"    HoltWinters MAPE={mape:.2f}%")
+    RESULTS["ts_HoltWinters"] = {"mape_pct": round(mape,3)}
 
     plot_forecast(
         months[:30], train_v, months[30:], fc,
