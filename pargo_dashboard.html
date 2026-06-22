@@ -30,7 +30,7 @@
 <style>
   :root {
     --bg: #0d1117; --surface: #161b22; --border: #30363d;
-    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
+    --text: #e6edf3; --muted: #8b949e; --accent: #29B5E8;
     --green: #3fb950; --red: #f85149; --yellow: #d29922; --purple: #bc8cff;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,12 +64,12 @@
   th { background: var(--border); color: var(--muted); padding: 8px 12px; text-align: left;
        font-weight: 600; font-size: 11px; text-transform: uppercase; }
   td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
-  tr:hover td { background: rgba(88,166,255,.05); }
+  tr:hover td { background: rgba(41,181,232,.05); }
   .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
   .badge.green { background: rgba(63,185,80,.2); color: var(--green); }
   .badge.red   { background: rgba(248,81,73,.2);  color: var(--red); }
   .badge.yellow{ background: rgba(210,153,34,.2); color: var(--yellow); }
-  .badge.blue  { background: rgba(88,166,255,.2); color: var(--accent); }
+  .badge.blue  { background: rgba(41,181,232,.2); color: var(--accent); }
   .arch-section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; }
   .arch-section h3 { color: var(--accent); margin-bottom: 16px; }
   .layer-box { border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin-bottom: 12px; }
@@ -290,8 +290,8 @@
   <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
     <div class="arch-section">
       <h3>Data Architecture</h3>
-      <div class="layer-box" style="border-color:#58a6ff">
-        <h4 style="color:#58a6ff">RAW Layer (Snowflake)</h4>
+      <div class="layer-box" style="border-color:#29B5E8">
+        <h4 style="color:#29B5E8">RAW Layer (Snowflake)</h4>
         <p>8 tables: 4 dimensions + 4 facts. Loaded via PUT + COPY INTO batch pattern.
            CLUSTER BY (LOAD_YEAR, date). Parquet/Snappy. PURGE=TRUE.</p>
         <br>
@@ -383,7 +383,7 @@ new Chart(document.getElementById('chartVolume'), {
     labels: MONTHS,
     datasets: [{
       label: 'Parcels', data: volumes,
-      backgroundColor: 'rgba(88,166,255,0.7)', borderRadius: 2
+      backgroundColor: 'rgba(41,181,232,0.7)', borderRadius: 2
     }]
   },
   options: { ...CHART_DEFAULTS, plugins: { ...CHART_DEFAULTS.plugins } }
@@ -395,7 +395,7 @@ new Chart(document.getElementById('chartStatus'), {
   data: {
     labels: ['Collected','In Transit','At Pickup Point','RTS','Pending'],
     datasets: [{ data: [62, 14, 10, 9, 5],
-      backgroundColor: ['#3fb950','#58a6ff','#bc8cff','#f85149','#d29922'] }]
+      backgroundColor: ['#3fb950','#29B5E8','#bc8cff','#f85149','#d29922'] }]
   },
   options: { responsive: true, plugins: { legend: { labels: { color: '#8b949e' } } } }
 });
@@ -417,7 +417,7 @@ new Chart(document.getElementById('chartService'), {
   data: {
     labels: ['Standard','Express','Economy','Same-Day'],
     datasets: [{ data: [55, 25, 15, 5],
-      backgroundColor: ['#58a6ff','#3fb950','#d29922','#bc8cff'] }]
+      backgroundColor: ['#29B5E8','#3fb950','#d29922','#bc8cff'] }]
   },
   options: { responsive: true, plugins: { legend: { labels: { color: '#8b949e' } } } }
 });
@@ -428,7 +428,7 @@ new Chart(document.getElementById('chartTransit'), {
   data: {
     labels: ['<12h','12-24h','24-48h','48-72h','72-96h','>96h'],
     datasets: [{ label: '% of parcels', data: [8,22,38,18,9,5],
-      backgroundColor: '#58a6ff', borderRadius: 2 }]
+      backgroundColor: '#29B5E8', borderRadius: 2 }]
   },
   options: CHART_DEFAULTS
 });
@@ -531,7 +531,7 @@ new Chart(document.getElementById('chartMlAuc'), {
     labels: ['Logistic Reg','Random Forest','XGBoost','LightGBM','MLP','Decision Tree','Ensemble'],
     datasets: [{ label: 'ROC-AUC',
       data: [0.808, 0.795, 0.809, 0.810, 0.806, 0.782, 0.810],
-      backgroundColor: ['#58a6ff','#3fb950','#f85149','#d29922','#bc8cff','#58a6ff','#3fb950'],
+      backgroundColor: ['#29B5E8','#3fb950','#f85149','#d29922','#bc8cff','#29B5E8','#3fb950'],
       borderRadius: 2
     }]
   },
@@ -548,7 +548,7 @@ new Chart(document.getElementById('chartFeatureImportance'), {
              'TRACKING_EVENTS','PROVINCE','SERVICE_TYPE'],
     datasets: [{ label: 'Importance',
       data: [0.28, 0.21, 0.16, 0.12, 0.10, 0.08, 0.05],
-      backgroundColor: '#58a6ff', borderRadius: 2
+      backgroundColor: '#29B5E8', borderRadius: 2
     }]
   },
   options: {
