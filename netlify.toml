@@ -1,0 +1,13 @@
+[build]
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/pargo_dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "/ml"
+  to = "/pargo_ml_visuals.html"
+  status = 200
