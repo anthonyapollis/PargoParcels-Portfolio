@@ -92,7 +92,7 @@ def build_exec_summary(wb):
 
     # Title
     ws.merge_cells("A1:H1")
-    ws["A1"].value = "Pargo Parcels Data Warehouse -- Portfolio Project"
+    ws["A1"].value = "Pargo Parcels Data Warehouse -- Completed Project"
     ws["A1"].font = Font(bold=True, size=16, color=ACCENT)
     ws["A1"].alignment = Alignment(horizontal="center")
     ws.row_dimensions[1].height = 36

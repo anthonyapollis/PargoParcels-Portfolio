@@ -70,4 +70,4 @@ dbt deps && dbt seed && dbt snapshot && dbt build && dbt source freshness
 - Avg dwell at point **36h** · RTS **5.5%** · Black Friday ≈ **1.9×** baseline
 - Fashion returns **14.1%** vs pharmacy **2.0%** · top-10 clients ≈ **49%** of revenue
 
-*Independent portfolio project. All data is synthetic; no affiliation with Pargo (Pty) Ltd.*
+*Independent analytics case study. All data is synthetic; no affiliation with Pargo (Pty) Ltd.*

@@ -14,7 +14,7 @@ Design notes (deliberate improvements over naive generation):
     in Snowflake we CLUSTER BY (province) instead.
   * Parcel lifecycle is milestone-driven: tracking events are derived from
     the same milestone timestamps that feed FACT_PARCEL, so the event log
-    and the fact table always reconcile (a classic interview gotcha).
+    and the fact table always reconcile (a classic reconciliation risk).
   * ~0.5% deliberately dirty rows are injected into RAW exports
     (dupes, null/negative weights, orphan events) so dbt tests have
     something real to catch. Cleaning happens in staging, as it should.

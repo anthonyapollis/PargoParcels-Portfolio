@@ -24,7 +24,7 @@ EBOOK_PROMPTS = [
     (
         "ebook_executive_summary",
         """You are a senior business consultant writing for a C-suite audience.
-Write a 2,000-word executive summary ebook chapter for the Pargo Parcels Data Warehouse portfolio project.
+Write a 2,000-word executive summary ebook chapter for the Pargo Parcels Data Warehouse completed project.
 Cover: business problem solved, scale (30M parcels, 150M tracking events, 36 months), key KPIs,
 ROI justification, and recommended next steps for a last-mile logistics company in South Africa.
 Use professional tone, include a 5-point summary at the start."""
