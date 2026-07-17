@@ -11,8 +11,8 @@
 **End-to-end analytics platform for South Africa's leading parcel pickup-point network.**  
 Raw Parquet → Snowflake → dbt → 15 ML Models → Interactive Dashboard
 
-[![Live Dashboard](https://img.shields.io/badge/▶_Open_Live_Dashboard-3B82F6?style=for-the-badge)](https://github.com/anthonyapollis/PargoParcels-Portfolio/blob/main/pargo_dashboard.html)
-[![ML Visuals](https://img.shields.io/badge/📊_ML_Visual_Portfolio-8B5CF6?style=for-the-badge)](https://github.com/anthonyapollis/PargoParcels-Portfolio/blob/main/pargo_ml_visuals.html)
+[![Live Dashboard](https://img.shields.io/badge/Open_Live_Dashboard-3B82F6?style=for-the-badge)](https://pargoparcels.netlify.app/)
+[![ML Visuals](https://img.shields.io/badge/ML_Visual_Portfolio-8B5CF6?style=for-the-badge)](https://pargoparcels.netlify.app/pargo_ml_visuals.html)
 
 </div>
 
