@@ -1,0 +1,847 @@
+{
+  "prefix": "parcelpulse-network-intelligence",
+  "theme": "pargo",
+  "mark": "PP",
+  "shortName": "ParcelPulse",
+  "sector": "Parcel network control",
+  "asOf": "36-month network view",
+  "snapshot": "Jul 2023 – Jun 2026",
+  "footer": "Source: Pargo Parcels public portfolio case study · synthetic data · 30.2M parcels · 210M events · held-out ML validation · fictional display identity",
+  "hero": "/extensions/parcelpulse-network-intelligence/assets/parcelpulse-hero.png",
+  "filters": [
+    "Province",
+    "Courier",
+    "Retailer tier"
+  ],
+  "sheetMap": {
+    "exec": "parcelpulse-network-intelligence-sheet-exec",
+    "volume": "parcelpulse-network-intelligence-sheet-volume",
+    "network": "parcelpulse-network-intelligence-sheet-network",
+    "sla": "parcelpulse-network-intelligence-sheet-sla",
+    "economics": "parcelpulse-network-intelligence-sheet-economics",
+    "ml": "parcelpulse-network-intelligence-sheet-ml"
+  },
+  "pages": [
+    {
+      "id": "exec",
+      "nav": "Control Tower",
+      "eyebrow": "01 · NETWORK COMMAND",
+      "title": "Parcel Network Control Tower",
+      "subtitle": "Move from parcel counts to network decisions: volume, service, risk and intervention value.",
+      "kpis": [
+        {
+          "icon": "box",
+          "label": "PARCELS",
+          "value": "30.2M",
+          "note": "36-month synthetic history",
+          "tone": "a"
+        },
+        {
+          "icon": "route",
+          "label": "TRACKING EVENTS",
+          "value": "210M",
+          "note": "End-to-end status signals",
+          "tone": "b"
+        },
+        {
+          "icon": "map",
+          "label": "PROVINCES",
+          "value": "9",
+          "note": "National network coverage",
+          "tone": "c"
+        },
+        {
+          "icon": "wallet",
+          "label": "RTS SAVING",
+          "value": "R10.1M",
+          "note": "Projected intervention value",
+          "tone": "d"
+        }
+      ],
+      "cards": [
+        {
+          "title": "Parcel volume trajectory",
+          "subtitle": "Monthly network scale, indexed for executive scan",
+          "type": "line",
+          "span": 7,
+          "rows": [
+            {
+              "label": "Jul 23",
+              "value": 61
+            },
+            {
+              "label": "Jan 24",
+              "value": 69
+            },
+            {
+              "label": "Jul 24",
+              "value": 76
+            },
+            {
+              "label": "Jan 25",
+              "value": 84
+            },
+            {
+              "label": "Jul 25",
+              "value": 91
+            },
+            {
+              "label": "Jan 26",
+              "value": 96
+            },
+            {
+              "label": "Jun 26",
+              "value": 100
+            }
+          ]
+        },
+        {
+          "title": "Terminal outcomes",
+          "subtitle": "Operating disposition of parcel flow",
+          "type": "donut",
+          "span": 5,
+          "center": "94.5%",
+          "centerLabel": "non-RTS",
+          "rows": [
+            {
+              "label": "Delivered / collected",
+              "value": 87.8
+            },
+            {
+              "label": "In network",
+              "value": 6.7
+            },
+            {
+              "label": "Return to sender",
+              "value": 5.5
+            }
+          ]
+        },
+        {
+          "title": "Executive decision",
+          "subtitle": "Protect the hand-off, not just the route",
+          "type": "narrative",
+          "span": 12,
+          "headline": "The pickup point is where network experience becomes customer trust.",
+          "text": "An RTS rate that looks small at portfolio level becomes material at 30.2 million parcels. Prioritise interventions by predicted risk, cost and controllable pickup-point friction.",
+          "actions": [
+            {
+              "title": "Score before dispatch",
+              "text": "Apply the ensemble risk score before cost is incurred."
+            },
+            {
+              "title": "Coach exception nodes",
+              "text": "Target dwell and notification failures by pickup point."
+            },
+            {
+              "title": "Track realised savings",
+              "text": "Separate projected benefit from verified avoided RTS cost."
+            }
+          ],
+          "icon": "route"
+        }
+      ]
+    },
+    {
+      "id": "volume",
+      "nav": "Volume & Growth",
+      "eyebrow": "02 · NETWORK DEMAND",
+      "title": "Parcel Volume & Growth",
+      "subtitle": "Read demand by province, retailer tier and season without losing service context.",
+      "kpis": [
+        {
+          "icon": "trend",
+          "label": "12-MONTH OUTLOOK",
+          "value": "+11.8%",
+          "note": "Holt-Winters directional forecast",
+          "tone": "a"
+        },
+        {
+          "icon": "map",
+          "label": "TOP PROVINCE",
+          "value": "Gauteng",
+          "note": "Largest network share",
+          "tone": "b"
+        },
+        {
+          "icon": "users",
+          "label": "CUSTOMER SEGMENTS",
+          "value": "5",
+          "note": "K-Means behaviour groups",
+          "tone": "c"
+        },
+        {
+          "icon": "shield",
+          "label": "FORECAST MAPE",
+          "value": "12.1%",
+          "note": "Back-tested forecast error",
+          "tone": "d"
+        }
+      ],
+      "cards": [
+        {
+          "title": "Province volume index",
+          "subtitle": "Relative parcel throughput by province",
+          "type": "bars",
+          "span": 7,
+          "rows": [
+            {
+              "label": "Gauteng",
+              "value": 100,
+              "display": "100 index"
+            },
+            {
+              "label": "Western Cape",
+              "value": 74,
+              "display": "74"
+            },
+            {
+              "label": "KwaZulu-Natal",
+              "value": 63,
+              "display": "63"
+            },
+            {
+              "label": "Eastern Cape",
+              "value": 31,
+              "display": "31"
+            },
+            {
+              "label": "Limpopo",
+              "value": 23,
+              "display": "23"
+            },
+            {
+              "label": "Mpumalanga",
+              "value": 21,
+              "display": "21"
+            }
+          ]
+        },
+        {
+          "title": "Retailer mix",
+          "subtitle": "Network demand by commercial tier",
+          "type": "donut",
+          "span": 5,
+          "center": "30.2M",
+          "centerLabel": "parcels",
+          "rows": [
+            {
+              "label": "Enterprise",
+              "value": 42
+            },
+            {
+              "label": "Growth",
+              "value": 31
+            },
+            {
+              "label": "SME",
+              "value": 18
+            },
+            {
+              "label": "Marketplace",
+              "value": 9
+            }
+          ]
+        },
+        {
+          "title": "Demand planning loop",
+          "subtitle": "Forecast to governed action",
+          "type": "pipeline",
+          "span": 12,
+          "rows": [
+            {
+              "label": "Observe",
+              "value": 36,
+              "display": "36 mo",
+              "note": "Historical signal"
+            },
+            {
+              "label": "Forecast",
+              "value": 12,
+              "display": "12 mo",
+              "note": "Volume outlook"
+            },
+            {
+              "label": "Capacity",
+              "value": 9,
+              "display": "9 provinces",
+              "note": "Node readiness"
+            },
+            {
+              "label": "Verify",
+              "value": 12.1,
+              "display": "12.1%",
+              "note": "MAPE baseline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "network",
+      "nav": "Pickup Network",
+      "eyebrow": "03 · NODE ECONOMICS",
+      "title": "Pickup Point Network",
+      "subtitle": "Expose node utilisation, dwell and reach so capacity follows real demand.",
+      "kpis": [
+        {
+          "icon": "map",
+          "label": "ACTIVE NODES",
+          "value": "4,860",
+          "note": "Synthetic pickup network",
+          "tone": "a"
+        },
+        {
+          "icon": "box",
+          "label": "MEDIAN DWELL",
+          "value": "1.7 days",
+          "note": "Arrival to collection",
+          "tone": "b"
+        },
+        {
+          "icon": "alert",
+          "label": "HIGH-DWELL NODES",
+          "value": "243",
+          "note": "5.0% review band",
+          "tone": "d"
+        },
+        {
+          "icon": "trend",
+          "label": "NODE COVERAGE",
+          "value": "92.4%",
+          "note": "Population reach proxy",
+          "tone": "c"
+        }
+      ],
+      "cards": [
+        {
+          "title": "Node opportunity matrix",
+          "subtitle": "Volume, dwell and service signal by metro",
+          "type": "matrix",
+          "span": 7,
+          "rows": [
+            {
+              "label": "Johannesburg North",
+              "value": 96,
+              "display": "96",
+              "note": "High volume · low dwell",
+              "status": "Scale"
+            },
+            {
+              "label": "Cape Town Metro",
+              "value": 91,
+              "display": "91",
+              "note": "Balanced network",
+              "status": "Protect"
+            },
+            {
+              "label": "Durban Central",
+              "value": 78,
+              "display": "78",
+              "note": "Notification leakage",
+              "status": "Coach"
+            },
+            {
+              "label": "Pretoria East",
+              "value": 73,
+              "display": "73",
+              "note": "Capacity pressure",
+              "status": "Expand"
+            },
+            {
+              "label": "Gqeberha",
+              "value": 64,
+              "display": "64",
+              "note": "Longer transit",
+              "status": "Monitor"
+            }
+          ]
+        },
+        {
+          "title": "Dwell risk by node type",
+          "subtitle": "Share breaching collection window",
+          "type": "bars",
+          "span": 5,
+          "rows": [
+            {
+              "label": "Mall locker",
+              "value": 4.1,
+              "display": "4.1%"
+            },
+            {
+              "label": "Retail counter",
+              "value": 5.8,
+              "display": "5.8%"
+            },
+            {
+              "label": "Independent store",
+              "value": 7.3,
+              "display": "7.3%"
+            },
+            {
+              "label": "Rural partner",
+              "value": 9.6,
+              "display": "9.6%"
+            }
+          ]
+        },
+        {
+          "title": "Network action",
+          "subtitle": "Balance reach with operating discipline",
+          "type": "narrative",
+          "span": 12,
+          "headline": "More pickup points only help when each node is observable and reliable.",
+          "text": "Use the opportunity matrix to separate nodes that need capacity from nodes that need process coaching.",
+          "actions": [
+            {
+              "title": "Expand proven catchments",
+              "text": "Add capacity where utilisation and collection speed are both strong."
+            },
+            {
+              "title": "Repair slow hand-offs",
+              "text": "Investigate notification timing, hours and scan discipline."
+            },
+            {
+              "title": "Protect rural reach",
+              "text": "Use different service thresholds where distance is structural."
+            }
+          ],
+          "icon": "map"
+        }
+      ]
+    },
+    {
+      "id": "sla",
+      "nav": "SLA & Exceptions",
+      "eyebrow": "04 · SERVICE ASSURANCE",
+      "title": "Delivery SLA & Exception Intelligence",
+      "subtitle": "Direct attention to breach causes, long dwell and preventable returns.",
+      "kpis": [
+        {
+          "icon": "shield",
+          "label": "SLA MET",
+          "value": "88.6%",
+          "note": "Network service baseline",
+          "tone": "a"
+        },
+        {
+          "icon": "route",
+          "label": "MEDIAN TRANSIT",
+          "value": "31.4 h",
+          "note": "Dispatch to pickup point",
+          "tone": "b"
+        },
+        {
+          "icon": "alert",
+          "label": "RTS RATE",
+          "value": "5.5%",
+          "note": "Modelled baseline",
+          "tone": "d"
+        },
+        {
+          "icon": "wallet",
+          "label": "COST EXPOSURE",
+          "value": "R18.4M",
+          "note": "Before intervention scenario",
+          "tone": "c"
+        }
+      ],
+      "cards": [
+        {
+          "title": "Exception contribution",
+          "subtitle": "Largest controllable causes",
+          "type": "bars",
+          "span": 7,
+          "rows": [
+            {
+              "label": "Customer not collected",
+              "value": 36,
+              "display": "36%"
+            },
+            {
+              "label": "Notification failure",
+              "value": 23,
+              "display": "23%"
+            },
+            {
+              "label": "Address / routing",
+              "value": 17,
+              "display": "17%"
+            },
+            {
+              "label": "Pickup point capacity",
+              "value": 14,
+              "display": "14%"
+            },
+            {
+              "label": "Courier delay",
+              "value": 10,
+              "display": "10%"
+            }
+          ]
+        },
+        {
+          "title": "SLA control bands",
+          "subtitle": "Priority by controllability and cost",
+          "type": "score",
+          "span": 5,
+          "rows": [
+            {
+              "label": "Notification failure",
+              "value": 91,
+              "display": "Act",
+              "note": "High controllability"
+            },
+            {
+              "label": "Long dwell",
+              "value": 83,
+              "display": "Act",
+              "note": "Collection-window risk"
+            },
+            {
+              "label": "Capacity constraint",
+              "value": 68,
+              "display": "Plan",
+              "note": "Node-specific"
+            },
+            {
+              "label": "Weather / external",
+              "value": 29,
+              "display": "Watch",
+              "note": "Low controllability"
+            }
+          ]
+        },
+        {
+          "title": "Exception review queue",
+          "subtitle": "Evidence retained for operations follow-up",
+          "type": "table",
+          "span": 12,
+          "columns": [
+            "Node",
+            "Province",
+            "Signal",
+            "Exposure",
+            "Action"
+          ],
+          "rows": [
+            [
+              "JHB-N-041",
+              "Gauteng",
+              "Notification retry spike",
+              "R482k",
+              "Repair integration"
+            ],
+            [
+              "CPT-118",
+              "Western Cape",
+              "Locker utilisation 97%",
+              "R369k",
+              "Add capacity"
+            ],
+            [
+              "DBN-077",
+              "KwaZulu-Natal",
+              "Median dwell 4.8d",
+              "R315k",
+              "Coach partner"
+            ],
+            [
+              "PLK-024",
+              "Limpopo",
+              "Transit p90 78h",
+              "R248k",
+              "Review route"
+            ],
+            [
+              "PE-063",
+              "Eastern Cape",
+              "RTS 9.1%",
+              "R231k",
+              "Risk intervention"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "economics",
+      "nav": "Customer Economics",
+      "eyebrow": "05 · COMMERCIAL NETWORK",
+      "title": "Customer & Route Economics",
+      "subtitle": "Connect parcel demand, retailer service and cost-to-serve to defensible growth choices.",
+      "kpis": [
+        {
+          "icon": "wallet",
+          "label": "NETWORK REVENUE",
+          "value": "R1.48B",
+          "note": "Synthetic 36-month value",
+          "tone": "a"
+        },
+        {
+          "icon": "users",
+          "label": "ACTIVE CUSTOMERS",
+          "value": "6.2M",
+          "note": "Modelled customer base",
+          "tone": "b"
+        },
+        {
+          "icon": "trend",
+          "label": "TOP CLV DECILE",
+          "value": "4.6×",
+          "note": "Value vs portfolio median",
+          "tone": "c"
+        },
+        {
+          "icon": "alert",
+          "label": "CHURN AUC",
+          "value": "0.80",
+          "note": "LightGBM validation",
+          "tone": "d"
+        }
+      ],
+      "cards": [
+        {
+          "title": "Retailer performance matrix",
+          "subtitle": "Scale, SLA and route economics",
+          "type": "matrix",
+          "span": 7,
+          "rows": [
+            {
+              "label": "Omni retailer A",
+              "value": 94,
+              "display": "R188M",
+              "note": "92% SLA · strong density",
+              "status": "Protect"
+            },
+            {
+              "label": "Marketplace B",
+              "value": 86,
+              "display": "R142M",
+              "note": "Fast growth · volatile RTS",
+              "status": "Coach"
+            },
+            {
+              "label": "Fashion C",
+              "value": 81,
+              "display": "R119M",
+              "note": "Seasonal peak pressure",
+              "status": "Plan"
+            },
+            {
+              "label": "Health D",
+              "value": 75,
+              "display": "R87M",
+              "note": "High collection rate",
+              "status": "Grow"
+            },
+            {
+              "label": "SME cohort",
+              "value": 63,
+              "display": "R71M",
+              "note": "Fragmented routes",
+              "status": "Bundle"
+            }
+          ]
+        },
+        {
+          "title": "Customer value segments",
+          "subtitle": "Five behavioural clusters",
+          "type": "donut",
+          "span": 5,
+          "center": "6.2M",
+          "centerLabel": "customers",
+          "rows": [
+            {
+              "label": "Loyal high value",
+              "value": 23
+            },
+            {
+              "label": "Digital regulars",
+              "value": 28
+            },
+            {
+              "label": "Occasional",
+              "value": 25
+            },
+            {
+              "label": "Deal-led",
+              "value": 15
+            },
+            {
+              "label": "At-risk",
+              "value": 9
+            }
+          ]
+        },
+        {
+          "title": "Commercial action",
+          "subtitle": "Density is the compounding advantage.",
+          "type": "narrative",
+          "span": 12,
+          "headline": "Parcel growth is most valuable when it improves node and route density without increasing exception cost.",
+          "text": "Density is the compounding advantage.",
+          "actions": [
+            {
+              "title": "Price for network fit",
+              "text": "Reward dense, predictable retailer flows."
+            },
+            {
+              "title": "Retain high-value customers",
+              "text": "Trigger intervention before activity decays."
+            },
+            {
+              "title": "Track contribution after service cost",
+              "text": "Rank routes on margin, not volume alone."
+            }
+          ],
+          "icon": "wallet"
+        }
+      ]
+    },
+    {
+      "id": "ml",
+      "nav": "ML & Trust",
+      "eyebrow": "06 · MODEL CONTROL",
+      "title": "ML Control Tower & Trust",
+      "subtitle": "Make model quality, limits and intervention economics visible before deployment.",
+      "kpis": [
+        {
+          "icon": "brain",
+          "label": "MODELS",
+          "value": "15",
+          "note": "Classification to CLV",
+          "tone": "a"
+        },
+        {
+          "icon": "trend",
+          "label": "BEST RTS AUC",
+          "value": "0.810",
+          "note": "Stacking ensemble",
+          "tone": "b"
+        },
+        {
+          "icon": "shield",
+          "label": "RTS RECALL",
+          "value": "80%",
+          "note": "LightGBM at threshold .45",
+          "tone": "c"
+        },
+        {
+          "icon": "alert",
+          "label": "ANOMALY BAND",
+          "value": "5.0%",
+          "note": "Isolation Forest review queue",
+          "tone": "d"
+        }
+      ],
+      "cards": [
+        {
+          "title": "Model registry",
+          "subtitle": "Held-out or back-tested evidence",
+          "type": "score",
+          "span": 6,
+          "rows": [
+            {
+              "label": "RTS ensemble",
+              "value": 81,
+              "display": "AUC .810",
+              "note": "Best classifier"
+            },
+            {
+              "label": "Churn LightGBM",
+              "value": 80,
+              "display": "AUC .800",
+              "note": "Retention triage"
+            },
+            {
+              "label": "Naive Bayes",
+              "value": 87.55,
+              "display": "Acc .876",
+              "note": "Secondary classification"
+            },
+            {
+              "label": "Holt-Winters",
+              "value": 87.9,
+              "display": "MAPE 12.1%",
+              "note": "12-month forecast"
+            },
+            {
+              "label": "K-Means",
+              "value": 17.12,
+              "display": "Sil .171",
+              "note": "Exploratory segments"
+            }
+          ]
+        },
+        {
+          "title": "RTS classifier comparison",
+          "subtitle": "Decision threshold remains explicit",
+          "type": "table",
+          "span": 6,
+          "columns": [
+            "Model",
+            "AUC",
+            "Precision",
+            "Recall"
+          ],
+          "rows": [
+            [
+              "LightGBM",
+              "0.8095",
+              "75%",
+              "80%"
+            ],
+            [
+              "XGBoost",
+              "0.8091",
+              "75%",
+              "79%"
+            ],
+            [
+              "Logistic",
+              "0.8076",
+              "74%",
+              "78%"
+            ],
+            [
+              "Random Forest",
+              "0.7950",
+              "72%",
+              "76%"
+            ],
+            [
+              "Decision Tree",
+              "0.7817",
+              "71%",
+              "75%"
+            ]
+          ]
+        },
+        {
+          "title": "Trust statement",
+          "subtitle": "Use prediction to prioritise contact, never to deny service.",
+          "type": "narrative",
+          "span": 12,
+          "headline": "The intervention value is a scenario, not realised finance.",
+          "text": "Metrics are held-out where stated; synthetic scale demonstrates engineering, not live Pargo performance.",
+          "actions": [
+            {
+              "title": "Monitor calibration",
+              "text": "Compare risk bands with observed RTS each month."
+            },
+            {
+              "title": "Audit retailer impact",
+              "text": "Check performance across retailer and province groups."
+            },
+            {
+              "title": "Measure realised value",
+              "text": "Record contacts, outcomes and avoided cost."
+            }
+          ],
+          "icon": "shield"
+        }
+      ]
+    }
+  ]
+}

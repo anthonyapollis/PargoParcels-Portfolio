@@ -2,6 +2,12 @@
 
 # Pargo Parcels — Data Warehouse & ML Platform
 
+## New: ParcelPulse Qlik Sense portfolio app
+
+![ParcelPulse executive dashboard](qlik/portfolio/previews/parcelpulse-network-intelligence-executive.png)
+
+The repository now includes a six-page Qlik Sense Desktop decision product with an original parcel-control visual system, network/SLA/economics intelligence, and a governed ML trust page. Download the ready-to-open QVF and extension package from [`qlik/portfolio`](qlik/portfolio/README.md).
+
 ![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=for-the-badge&logo=snowflake&logoColor=white)
 ![dbt](https://img.shields.io/badge/dbt-FF694B?style=for-the-badge&logo=dbt&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)

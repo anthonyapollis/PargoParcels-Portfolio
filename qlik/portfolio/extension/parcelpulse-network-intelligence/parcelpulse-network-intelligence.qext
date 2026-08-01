@@ -1,0 +1,10 @@
+{
+  "name": "ParcelPulse Network Intelligence",
+  "description": "Six-page employer-facing Qlik Sense decision product for Parcel network control.",
+  "type": "visualization",
+  "version": "1.0.0",
+  "author": "Anthony Apollis",
+  "icon": "extension",
+  "preview": "",
+  "homepage": ""
+}

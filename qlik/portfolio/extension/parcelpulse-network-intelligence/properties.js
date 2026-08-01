@@ -1,0 +1,1 @@
+define([],function(){return{type:"items",component:"accordion",items:{settings:{uses:"settings",items:{page:{ref:"defaultPage",label:"Dashboard page",type:"string",component:"dropdown",defaultValue:"exec",options:[]}}}}};});
